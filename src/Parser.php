@@ -128,6 +128,11 @@ class Parser
         $interests = $this->getInterests($textLines);
         $parsedResumeInstance->setInterests($interests);
 
+        $this->getOrganizations($textLines);
+        $this->getCourses($textLines);
+        $this->getProjects($textLines);
+        $this->getHonorsAndAwards($textLines);
+
         return $parsedResumeInstance;
     }
 
@@ -633,5 +638,61 @@ class Parser
     {
         $interestLines = $this->findSectionLines(self::INTERESTS_TITLE, $textLines);
         return implode('', $interestLines);
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     */
+    protected function getOrganizations(array $textLines)
+    {
+        $organizationLines = $this->findSectionLines(self::ORGANIZATIONS_TITLE, $textLines);
+
+        if (count($organizationLines)) {
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     */
+    protected function getCourses(array $textLines)
+    {
+        $courseLines = $this->findSectionLines(self::COURSES_TITLE, $textLines);
+
+        if (count($courseLines)) {
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     */
+    protected function getProjects(array $textLines)
+    {
+        $projectLines = $this->findSectionLines(self::PROJECTS_TITLE, $textLines);
+
+        if (count($projectLines)) {
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     */
+    protected function getHonorsAndAwards(array $textLines)
+    {
+        $honorsAndAwardsLines = $this->findSectionLines(self::HONORS_AND_AWARDS_TITLE, $textLines);
+
+        if (count($honorsAndAwardsLines)) {
+        }
+
+        return [];
     }
 }
