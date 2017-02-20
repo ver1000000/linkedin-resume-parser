@@ -110,20 +110,6 @@ class Role implements JsonSerializable, RoleInterface
     }
 
     /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'jobTitle'     => $this->title,
-            'organisation' => $this->organisation,
-            'summary'      => $this->summary,
-            'start'        => $this->start->format('Y-m-d H:i:s'),
-            'end'          => $this->end ? $this->end->format('Y-m-d H:i:s') : null,
-        ];
-    }
-
-    /**
      * @return string
      */
     public function getSummary(): string
@@ -149,5 +135,19 @@ class Role implements JsonSerializable, RoleInterface
     {
         $this->summary .= $summaryPart;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'jobTitle'     => $this->title,
+            'organisation' => $this->organisation,
+            'summary'      => $this->summary,
+            'start'        => $this->start->format('Y-m-d H:i:s'),
+            'end'          => $this->end ? $this->end->format('Y-m-d H:i:s') : null,
+        ];
     }
 }

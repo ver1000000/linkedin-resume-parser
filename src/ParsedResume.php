@@ -32,6 +32,11 @@ class ParsedResume implements JsonSerializable
     protected $summary;
 
     /**
+     * @var string
+     */
+    protected $interests;
+
+    /**
      * @var Role
      */
     protected $currentRole;
@@ -211,24 +216,6 @@ class ParsedResume implements JsonSerializable
     }
 
     /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'name'                       => $this->name,
-            'emailAddress'               => $this->emailAddress,
-            'skills'                     => $this->skills,
-            'currentRole'                => $this->currentRole,
-            'previousRoles'              => $this->previousRoles,
-            'educationEntries'           => $this->educationEntries,
-            'certifications'             => $this->certifications,
-            'volunteerExperienceEntries' => $this->volunteerExperienceEntries,
-            'languages'                  => $this->languages,
-        ];
-    }
-
-    /**
      * @return string
      */
     public function getSummary(): string
@@ -280,5 +267,43 @@ class ParsedResume implements JsonSerializable
     {
         $this->languages = $languages;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInterests(): string
+    {
+        return $this->interests;
+    }
+
+    /**
+     * @param string $interests
+     * @return ParsedResume
+     */
+    public function setInterests(string $interests): ParsedResume
+    {
+        $this->interests = $interests;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'name'                       => $this->name,
+            'emailAddress'               => $this->emailAddress,
+            'summary'                    => $this->summary,
+            'interests'                  => $this->interests,
+            'skills'                     => $this->skills,
+            'currentRole'                => $this->currentRole,
+            'previousRoles'              => $this->previousRoles,
+            'educationEntries'           => $this->educationEntries,
+            'certifications'             => $this->certifications,
+            'volunteerExperienceEntries' => $this->volunteerExperienceEntries,
+            'languages'                  => $this->languages,
+        ];
     }
 }

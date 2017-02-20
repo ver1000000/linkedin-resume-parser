@@ -68,11 +68,11 @@ class Parser
      */
     public function parse(string $filePath): ParsedResume
     {
-        if (! file_exists($filePath)) {
+        if ( ! file_exists($filePath)) {
             throw new FileNotFoundException("The file at $filePath does not exist.");
         }
 
-        if (! is_readable($filePath)) {
+        if ( ! is_readable($filePath)) {
             throw new FileNotReadableException("The file at $filePath is not readable.");
         }
 
@@ -85,6 +85,10 @@ class Parser
 
         $name = $textLines[0];
         $parsedResumeInstance->setName($name);
+
+        // @TODO - Find this programmatically
+        // $emailAddress = $textLines[2];
+        // $parsedResumeInstance->setEmailAddress($emailAddress);
 
         $textLines = $this->removeLastSection($textLines, $name);
 
@@ -120,6 +124,9 @@ class Parser
 
         $languages = $this->getLanguages($textLines);
         $parsedResumeInstance->setLanguages($languages);
+
+        $interests = $this->getInterests($textLines);
+        $parsedResumeInstance->setInterests($interests);
 
         return $parsedResumeInstance;
     }
@@ -174,7 +181,7 @@ class Parser
      * Check if the given index is indicative of being a Page designation
      * e.g. current index will be "Page" and then the immediate index will be the number
      *
-     * @param int $index
+     * @param int   $index
      * @param array $textLines
      * @return bool
      */
@@ -184,7 +191,7 @@ class Parser
     }
 
     /**
-     * @param array $textLines
+     * @param array  $textLines
      * @param string $name
      * @return string[]
      */
@@ -206,7 +213,7 @@ class Parser
 
     /**
      * @param string $sectionTitle
-     * @param array $textLines
+     * @param array  $textLines
      * @return array
      */
     protected function findSectionLines(string $sectionTitle, array $textLines): array
@@ -223,7 +230,7 @@ class Parser
     }
 
     /**
-     * @param int $startIndex
+     * @param int   $startIndex
      * @param array $textLines
      * @return int
      */
@@ -270,7 +277,7 @@ class Parser
 
     /**
      * @param string $classType
-     * @param array $roleLines
+     * @param array  $roleLines
      * @return array
      * @throws ParseException
      */
@@ -318,7 +325,7 @@ class Parser
                 $roleType
                     ->setStart($startDate)
                     ->setEnd($endDate);
-            } elseif (! preg_match('/^\(.*\)$/', $roleLine)) { // Not time description, so make it part of the summary
+            } elseif ( ! preg_match('/^\(.*\)$/', $roleLine)) { // Not time description, so make it part of the summary
                 $roleType->appendSummary($roleLine);
             }
         }
@@ -437,7 +444,7 @@ class Parser
 
     /**
      * @param Certification $certification
-     * @param string $textLine
+     * @param string        $textLine
      * @return Certification
      * @throws ParseException
      */
@@ -582,10 +589,8 @@ class Parser
      * @param string $educationLine
      * @return array
      */
-    protected
-    function parseEducationParts(
-        string $educationLine
-    ): array {
+    protected function parseEducationParts(string $educationLine): array
+    {
         $parts = $this->splitAndTrim(',', $educationLine);
 
         $partsCount = count($parts);
@@ -600,5 +605,15 @@ class Parser
             $dateParts[0],
             $dateParts[1],
         ];
+    }
+
+    /**
+     * @param array $textLines
+     * @return string
+     */
+    protected function getInterests(array $textLines): string
+    {
+        $interestLines = $this->findSectionLines(self::INTERESTS_TITLE, $textLines);
+        return implode('', $interestLines);
     }
 }

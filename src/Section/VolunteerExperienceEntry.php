@@ -3,13 +3,14 @@
 namespace LinkedInResumeParser\Section;
 
 use DateTimeInterface;
+use JsonSerializable;
 
 /**
  * Class VolunteerExperienceEntry
  *
  * @package LinkedInResumeParser\Section
  */
-class VolunteerExperienceEntry implements RoleInterface
+class VolunteerExperienceEntry implements RoleInterface, JsonSerializable
 {
     /**
      * @var string
@@ -134,5 +135,19 @@ class VolunteerExperienceEntry implements RoleInterface
     {
         $this->summary .= $summaryPart;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'jobTitle'     => $this->title,
+            'organisation' => $this->organisation,
+            'summary'      => $this->summary,
+            'start'        => $this->start->format('Y-m-d H:i:s'),
+            'end'          => $this->end ? $this->end->format('Y-m-d H:i:s') : null,
+        ];
     }
 }
