@@ -278,17 +278,33 @@ class Parser
     {
         $roleTypes = [];
 
-        foreach ($roleLines as $key => $roleLine) {
+        for ($i = 0; $i < count($roleLines); $i++) {
 
-            // Role title / description
+            $roleLine = $roleLines[$i];
+
+            /** @var RoleInterface $roleType */
+
             if ($this->isRoleDescriptionLine($roleLine)) {
+                $roleDescriptionLine = $roleLine;
+
                 // Marks the start of a new role, so add it to the list of roles
                 if (isset($roleType)) {
                     $roleTypes[] = $roleType;
                 }
 
+                // There may be more lines that follow that should be appended to the role description
+                // @TODO - Revisit this logic to handle multi-line descriptions
+//                for ($roleDescriptionIndex = $i + 1; $roleDescriptionIndex < count($roleLines); $roleDescriptionIndex++) {
+//                    if (preg_match('/\s{2}-\s{2}/', $roleLines[$roleDescriptionIndex])) {
+//                        break;
+//                    } else {
+//                        $roleDescriptionLine .= ' ' . $roleLines[$roleDescriptionIndex];
+//                        $i++;
+//                    }
+//                }
+
                 // Begin parsing the new role
-                list($title, $organisation) = $this->parseRoleParts($roleLine);
+                list($title, $organisation) = $this->parseRoleParts($roleDescriptionLine);
 
                 /** @var RoleInterface $roleType */
                 $roleType = (new $classType());
@@ -296,17 +312,14 @@ class Parser
                 $roleType
                     ->setTitle($title)
                     ->setOrganisation($organisation);
+
             } elseif (preg_match('/\s{2}-\s{2}/', $roleLine)) { // Date range
                 list($startDate, $endDate) = $this->parseRoleDates($roleLine);
-                if (isset($roleType)) {
-                    $roleType
-                        ->setStart($startDate)
-                        ->setEnd($endDate);
-                }
+                $roleType
+                    ->setStart($startDate)
+                    ->setEnd($endDate);
             } elseif (! preg_match('/^\(.*\)$/', $roleLine)) { // Not time description, so make it part of the summary
-                if (isset($roleType)) {
-                    $roleType->appendSummary($roleLine);
-                }
+                $roleType->appendSummary($roleLine);
             }
         }
 

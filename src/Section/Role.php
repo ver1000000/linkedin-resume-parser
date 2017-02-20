@@ -147,7 +147,7 @@ class Role implements JsonSerializable, RoleInterface
      */
     public function appendSummary(string $summaryPart): RoleInterface
     {
-        $this->summary .= trim($summaryPart);
+        $this->summary .= $summaryPart;
         return $this;
     }
 }

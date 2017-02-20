@@ -3,6 +3,7 @@
 namespace LinkedInResumeParser\Tests;
 
 use LinkedInResumeParser\Exception\FileNotFoundException;
+use LinkedInResumeParser\Exception\LinkedInResumeParserException;
 use LinkedInResumeParser\ParsedResume;
 use LinkedInResumeParser\Parser;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,14 @@ class ParserTest extends TestCase
         $this->expectException(FileNotFoundException::class);
 
         $parser = new Parser();
-        $parser->parse($this->samplePath . 'ResumeThatDoesNotExist.pdf');
+        $parser->parse($this->samplePath . '/ResumeThatDoesNotExist.pdf');
+    }
+
+    public function testSingleSample()
+    {
+        $parser = new Parser();
+        $result = $parser->parse($this->samplePath . '/JacobStelman.pdf');
+        $this->assertInstanceOf(ParsedResume::class, $result);
     }
 
     public function testAllSamples()
