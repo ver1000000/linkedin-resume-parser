@@ -90,9 +90,9 @@ class ParsedResume implements JsonSerializable
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getEmailAddress(): string
+    public function getEmailAddress()
     {
         return $this->emailAddress;
     }

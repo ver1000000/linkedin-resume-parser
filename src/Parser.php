@@ -86,9 +86,9 @@ class Parser
         $name = $textLines[0];
         $parsedResumeInstance->setName($name);
 
-        // @TODO - Find this programmatically
-        // $emailAddress = $textLines[2];
-        // $parsedResumeInstance->setEmailAddress($emailAddress);
+        if ($emailAddress = $this->getEmailAddress($textLines)) {
+            $parsedResumeInstance->setEmailAddress($emailAddress);
+        }
 
         $textLines = $this->removeLastSection($textLines, $name);
 
@@ -200,6 +200,24 @@ class Parser
         $lastNameOccurrence = array_search($name, array_reverse($textLines));
         array_splice($textLines, count($textLines) - $lastNameOccurrence - 1);
         return $textLines;
+    }
+
+    /**
+     * @param array $textLines
+     * @return string | null
+     */
+    protected function getEmailAddress(array $textLines)
+    {
+        $potentialEmailLines = array_slice($textLines, 1, 4);
+
+        foreach ($potentialEmailLines as $potentialEmailLine) {
+            // Very basic email check
+            if (preg_match('/.*?\@.*?$/', $potentialEmailLine)) {
+                return $potentialEmailLine;
+            }
+        }
+
+        return null;
     }
 
     /**
