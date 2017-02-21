@@ -37,7 +37,7 @@ class ParserTest extends TestCase
     public function testSingleSample()
     {
         $parser = new Parser();
-        $result = $parser->parse($this->samplePath . '/RossKinsman.pdf');
+        $result = $parser->parse($this->samplePath . '/ElisseJean-Pierre.pdf');
         $this->assertInstanceOf(ParsedResume::class, $result);
     }
 
@@ -47,7 +47,9 @@ class ParserTest extends TestCase
         $parser = new Parser();
 
         foreach ($samplePdfItems as $key => $samplePdfItem) {
+            echo "Running ${samplePdfItem}" . PHP_EOL;
             $result = $parser->parse($samplePdfItem);
+            print_r(json_encode($result, JSON_PRETTY_PRINT));
             $this->assertInstanceOf(ParsedResume::class, $result);
         }
     }

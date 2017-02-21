@@ -63,16 +63,4 @@ interface RoleInterface
      * @return RoleInterface
      */
     public function setSummary(string $summary): RoleInterface;
-
-    /**
-     * @param string $summaryPart
-     * @return RoleInterface
-     */
-    public function appendSummary(string $summaryPart): RoleInterface;
-
-    /**
-     * @param string $titlePart
-     * @return RoleInterface
-     */
-    public function appendTitle(string $titlePart): RoleInterface;
 }

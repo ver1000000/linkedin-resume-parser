@@ -11,12 +11,10 @@ use LinkedInResumeParser\Section\Certification;
 use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Role;
+use LinkedInResumeParser\Section\RoleInterface;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
-use SebastianBergmann\CodeCoverage\Report\Text;
 use Smalot\PdfParser\Document;
-use Smalot\PdfParser\Element\ElementName;
-use Smalot\PdfParser\Font\FontType0;
-use Smalot\PdfParser\Font\FontType1;
+use Smalot\PdfParser\Font;
 use Smalot\PdfParser\Parser as PdfParser;
 
 /**
@@ -90,11 +88,11 @@ class Parser
         $name = $textLines[0];
         $parsedResumeInstance->setName($name);
 
+        $textLines = $this->removeLastSection($textLines, $name);
+
         if ($emailAddress = $this->getEmailAddress($textLines)) {
             $parsedResumeInstance->setEmailAddress($emailAddress);
         }
-
-        $textLines = $this->removeLastSection($textLines, $name);
 
         $skills = $this->getSkills($textLines);
         $parsedResumeInstance->setSkills($skills);
@@ -104,30 +102,32 @@ class Parser
         }
 
         $roles = $this->getRoles($textLines);
-//
-//        // Check if their latest role has ended, i.e. it is not their current role
-//        $latestRole = reset($roles);
-//        if ($latestRole->getEnd() === null) {
-//            // Remove it from our list since we're setting previous roles
-//            array_shift($roles);
-//
-//            // Set it as the current role
-//            $parsedResumeInstance->setCurrentRole($latestRole);
-//        }
-//
-//        $parsedResumeInstance->setPreviousRoles($roles);
 
-        $educationEntries = $this->getEducationEntries($textLines);
-        $parsedResumeInstance->setEducationEntries($educationEntries);
+        // Check if their latest role has ended, i.e. it is not their current role
+        $latestRole = reset($roles);
+        if ($latestRole->getEnd() === null) {
+            // Remove it from our list since we're setting previous roles
+            array_shift($roles);
 
-        $certifications = $this->getCertifications($textLines);
-        $parsedResumeInstance->setCertifications($certifications);
+            // Set it as the current role
+            $parsedResumeInstance->setCurrentRole($latestRole);
+        }
+
+        $parsedResumeInstance->setPreviousRoles($roles);
 
         $volunteerExperienceEntries = $this->getVolunteerExperienceEntries($textLines);
         $parsedResumeInstance->setVolunteerExperienceEntries($volunteerExperienceEntries);
 
-        $languages = $this->getLanguages($textLines);
-        $parsedResumeInstance->setLanguages($languages);
+        $educationEntries = $this->getEducationEntries($textLines);
+        $parsedResumeInstance->setEducationEntries($educationEntries);
+
+        if ($certifications = $this->getCertifications($textLines)) {
+            $parsedResumeInstance->setCertifications($certifications);
+        }
+
+        if ($languages = $this->getLanguages($textLines)) {
+            $parsedResumeInstance->setLanguages($languages);
+        }
 
         $interests = $this->getInterests($textLines);
         $parsedResumeInstance->setInterests($interests);
@@ -138,17 +138,6 @@ class Parser
 //        $this->getHonorsAndAwards($textLines);
 
         return $parsedResumeInstance;
-    }
-
-    /**
-     * @param array $textLines
-     * @return string[]
-     */
-    protected function getTextValues(array $textLines)
-    {
-        return array_map(function (TextLine $textLine) {
-            return $textLine->getText();
-        }, $textLines);
     }
 
     /**
@@ -168,55 +157,47 @@ class Parser
      */
     protected function getAllTextLines(Document $parsedPdfInstance): array
     {
-        $textSections = [];
+        $currentFont = new Font($parsedPdfInstance);
 
-        $fonts = [];
+        $textLines = [];
+
+        $libText = [];
 
         foreach ($parsedPdfInstance->getPages() as $page) {
-            $fonts += $page->getFonts();
-            $textSections = array_merge($textSections, $page->getSectionsText($page->get('Contents')->getContent()));
-        }
 
-        $currentFontIsBold = false;
+            $libText = array_merge($libText, $page->getTextArray());
 
-        $textLineEntities = [];
+            $content = $page->get('Contents')->getContent();
+            $sectionsText = $page->getSectionsText($content);
 
-        foreach ($textSections as $textSection) {
-            $lines = explode(PHP_EOL, $textSection);
+            foreach ($sectionsText as $section) {
 
-            foreach ($lines as $line) {
-                if (preg_match('/\/(F\d)\s\d{0,}\s[A-z]{2}/', $line, $matches)) { // Denotes new font
-                    $currentFontIsBold = $this->isFontBold($matches[1], $fonts);
-                } elseif (preg_match('/\[\(\\\\\((.*)\\\\/', $line, $matches)) {
-                    $textLineEntities[] = new TextLine('(' . $matches[1] . ')', $currentFontIsBold);
-                } elseif (preg_match('/\((.*)\)/', $line, $matches)) {
-                    $textLineEntities[] = new TextLine($matches[1], $currentFontIsBold);
+                $commands = $page->getCommandsText($section);
+
+                foreach ($commands as $command) {
+
+                    switch ($command['o']) {
+                        case 'Tf':
+                            list($id,) = preg_split('/\s/s', $command['c']);
+                            $id = trim($id, '/');
+                            $currentFont = $page->getFont($id);
+                            break;
+                        case "'":
+                        case 'Tj':
+                            $text = $currentFont->decodeText([$command]);
+                            $textLines[] = (new TextLine($text, $currentFont));
+                            break;
+                        case 'TJ':
+                            $text = $currentFont->decodeText($command['c']);
+                            $textLines[] = (new TextLine($text, $currentFont));
+                            break;
+                        default:
+                    }
                 }
             }
-
         }
 
-        return $textLineEntities;
-    }
-
-    /**
-     * @param string $fontDesignation
-     * @param array $fonts
-     * @return bool
-     * @throws ParseException
-     */
-    protected function isFontBold($fontDesignation, $fonts): bool
-    {
-        if ( ! isset($fonts[$fontDesignation])) {
-            throw new ParseException("Unable to find a suitable font matching token ${fontDesignation}");
-        }
-
-        /** @var FontType0 | FontType1 $currentFont */
-        $currentFont = $fonts[$fontDesignation];
-
-        $fontName = $currentFont->get('BaseFont')->getContent();
-
-        return stripos($fontName, 'bold') !== false ? true : false;
+        return $textLines;
     }
 
     /**
@@ -243,13 +224,25 @@ class Parser
      * Check if the given index is indicative of being a Page designation
      * e.g. current index will be "Page" and then the immediate index will be the number
      *
-     * @param int $index
+     * @param int   $index
      * @param array $textLines
      * @return bool
      */
     protected function isPageDesignation(int $index, array $textLines): bool
     {
         return (string)$textLines[$index] === 'Page' && is_numeric((string)$textLines[$index + 1]);
+    }
+
+    /**
+     * @param array    $textLines
+     * @param TextLine $name
+     * @return TextLine[]
+     */
+    protected function removeLastSection(array $textLines, TextLine $name): array
+    {
+        $lastNameOccurrence = array_search($name, array_reverse($textLines));
+        array_splice($textLines, count($textLines) - $lastNameOccurrence - 1);
+        return $textLines;
     }
 
     /**
@@ -273,18 +266,6 @@ class Parser
 
     /**
      * @param array $textLines
-     * @param TextLine $name
-     * @return TextLine[]
-     */
-    protected function removeLastSection(array $textLines, TextLine $name): array
-    {
-        $lastNameOccurrence = array_search($name, array_reverse($textLines));
-        array_splice($textLines, count($textLines) - $lastNameOccurrence - 1);
-        return $textLines;
-    }
-
-    /**
-     * @param array $textLines
      * @return array
      */
     protected function getSkills(array $textLines): array
@@ -293,8 +274,19 @@ class Parser
     }
 
     /**
-     * @param string $sectionTitle
      * @param array $textLines
+     * @return string[]
+     */
+    protected function getTextValues(array $textLines)
+    {
+        return array_map(function (TextLine $textLine) {
+            return $textLine->getText();
+        }, $textLines);
+    }
+
+    /**
+     * @param string $sectionTitle
+     * @param array  $textLines
      * @return array
      */
     protected function findSectionLines(string $sectionTitle, array $textLines): array
@@ -311,7 +303,7 @@ class Parser
     }
 
     /**
-     * @param int $startIndex
+     * @param int   $startIndex
      * @param array $textLines
      * @return int
      */
@@ -357,8 +349,8 @@ class Parser
     }
 
     /**
-     * @param string $classType
-     * @param array $roleLines
+     * @param string     $classType
+     * @param TextLine[] $roleLines
      * @return array
      * @throws ParseException
      */
@@ -366,71 +358,144 @@ class Parser
     {
         $roleTypes = [];
 
-        $roleSections = $this->breakIntoRoleSections($roleLines);
+        $currentGroupIndex = 0;
+        $roleGroups = [];
+        $previousLineWasBold = false;
 
-        foreach ($roleLines as $roleLine) {
-            if ($this->isRoleDescriptionLine($roleLine)) {
-                echo $roleLine . PHP_EOL;
+        foreach ($roleLines as $key => $roleLine) {
+
+            $roleLineText = $roleLine->getText();
+
+            if (preg_match('/\s{2}-\s{2}/', $roleLineText)) {
+                $previousLineWasBold = false;
+                $roleGroups[$currentGroupIndex]['date'] = $roleLineText;
+            } elseif ($roleLine->isBold()) {
+                if ( ! $previousLineWasBold) {
+                    $currentGroupIndex += 1;
+                    $roleGroups[$currentGroupIndex] = [
+                        'title'   => '',
+                        'date'    => '',
+                        'summary' => '',
+                    ];
+                }
+                $roleGroups[$currentGroupIndex]['title'] .= ' ' . $roleLineText;
+                $previousLineWasBold = true;
+            } elseif ( ! preg_match('/\(.*\)/', $roleLineText)) { // This indicates the duration, so skip it.
+                $previousLineWasBold = false;
+                $roleGroups[$currentGroupIndex]['summary'] .= $roleLineText;
             }
         }
 
-        if (isset($roleType)) {
+        foreach ($roleGroups as $roleGroup) {
+            /** @var RoleInterface $roleType */
+            $roleType = new $classType();
+
+            list($title, $organisation) = $this->parseRoleParts($roleGroup['title']);
+
+            $roleType
+                ->setTitle($title)
+                ->setOrganisation($organisation);
+
+            if ($roleGroup['date']) {
+                list($start, $end) = $this->parseRoleDates($roleGroup['date']);
+
+                $roleType
+                    ->setStart($start)
+                    ->setEnd($end);
+            }
+
+            if ($roleGroup['summary']) {
+                $roleType->setSummary($roleGroup['summary']);
+            }
+
             $roleTypes[] = $roleType;
         }
 
         return $roleTypes;
     }
 
-
-    protected function breakIntoRoleSections(array $roleLines): array
+    /**
+     * @param string $roleLine
+     * @return array
+     * @throws ParseException
+     */
+    protected function parseRoleParts(string $roleLine): array
     {
-        $endIndex = count($roleLines) - 1;
+        $roleParts = $this->splitAndTrim('  at  ', $roleLine);
 
-        $roleSections = [];
-
-        $dateIndexes = [];
-
-        foreach ($roleLines as $key => $roleLine) {
-            if (preg_match('/\s{2}-\s{2}/', $roleLine)) {
-                $dateIndexes[] = $key;
-            }
+        if (count($roleParts) === 2) {
+            return $roleParts;
+        } else {
+            throw new ParseException("There was an error parsing the job title and organisation from the role line '${roleLine}'");
         }
-
-        $previousRoleStart = 0;
-
-        foreach ($dateIndexes as $key => $dateIndex) {
-            $titleAndOrganisation = implode(' ', array_slice($roleLines, $previousRoleStart, $dateIndex - $previousRoleStart));
-//            echo $titleAndOrganisation . PHP_EOL;
-            $previousRoleStart = $dateIndex;
-//            $dateLine = $roleLines[$dateIndex];
-//            $summary = implode(' ', array_slice($roleLines, $dateIndex + 1));
-
-
-//            $summary = '';
-//
-//            $sectionEndIndex = isset($dateIndexes[$key + 1]) ? $dateIndexes[$key + 1] : $endIndex;
-//
-//            for ($i = $dateIndex + 1; $i < $sectionEndIndex; $i++) {
-//                $summaryLine = $roleLines[$i];
-//
-//                if (strpos($summaryLine, ' ') === 0) {
-//                    $b = 1;
-//                } else {
-//                    $b = 1;
-//                }
-//            }
-        }
-
-        return [];
     }
 
     /**
-     * @param string $textLine
-     * @return bool
+     * @param string $delimiter
+     * @param string $string
+     * @return array
      */
-    protected function isRoleDescriptionLine(string $textLine): bool
+    protected function splitAndTrim(string $delimiter, string $string): array
     {
-        return preg_match('/\s{2}at\s{3}/', $textLine);
+        return array_map(
+            'trim',
+            explode($delimiter, $string)
+        );
+    }
+
+    /**
+     * @param string $datesLine
+     * @return array
+     * @throws ParseException
+     */
+    protected function parseRoleDates(string $datesLine): array
+    {
+        $dateParts = $this->splitAndTrim('-', $datesLine);
+
+        if (count($dateParts) === 2) {
+
+            $startDateTime = $this->parseStringToDateTime($dateParts[0]);
+
+            if ($dateParts[1] === 'Present') {
+                $endDateTime = null;
+            } else {
+                $endDateTime = $this->parseStringToDateTime($dateParts[1]);
+            }
+
+            return [
+                $startDateTime,
+                $endDateTime,
+            ];
+        } else {
+            throw new ParseException("There was an error parsing the role dates from the line '${datesLine}'");
+        }
+    }
+
+    /**
+     * @param string $string
+     * @return DateTime
+     * @throws ParseException
+     */
+    protected function parseStringToDateTime(string $string): DateTime
+    {
+        if (preg_match('/\w{1,}\s\d{4}/', $string)) {
+            return DateTime::createFromFormat('H:i:s d F Y', '00:00:00 01 ' . $string);
+        } elseif (preg_match('/\d{4}/', $string)) {
+            return DateTime::createFromFormat('H:i:s d m Y', '00:00:00 01 01 ' . $string);
+        } else {
+            throw new ParseException("Unable to parse a valid date time from '${string}'");
+        }
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     * @throws ParseException
+     */
+    protected function getVolunteerExperienceEntries(array $textLines): array
+    {
+        $volunteerExperienceLines = $this->findSectionLines(self::VOLUNTEER_EXPERIENCE_TITLE, $textLines);
+        return $this->buildRoleTypes(VolunteerExperienceEntry::class, $volunteerExperienceLines);
     }
 
     /**
@@ -529,7 +594,7 @@ class Parser
 
     /**
      * @param Certification $certification
-     * @param string $textLine
+     * @param string        $textLine
      * @return Certification
      * @throws ParseException
      */
@@ -561,33 +626,6 @@ class Parser
         }
 
         return $certification;
-    }
-
-    /**
-     * @param string $string
-     * @return DateTime
-     * @throws ParseException
-     */
-    protected function parseStringToDateTime(string $string): DateTime
-    {
-        if (preg_match('/\w{1,}\s\d{4}/', $string)) {
-            return DateTime::createFromFormat('H:i:s d F Y', '00:00:00 01 ' . $string);
-        } elseif (preg_match('/\d{4}/', $string)) {
-            return DateTime::createFromFormat('H:i:s d m Y', '00:00:00 01 01 ' . $string);
-        } else {
-            throw new ParseException("Unable to parse a valid date time from '${string}'");
-        }
-    }
-
-    /**
-     * @param array $textLines
-     * @return array
-     * @throws ParseException
-     */
-    protected function getVolunteerExperienceEntries(array $textLines): array
-    {
-        $volunteerExperienceLines = $this->findSectionLines(self::VOLUNTEER_EXPERIENCE_TITLE, $textLines);
-        return $this->buildRoleTypes(VolunteerExperienceEntry::class, $volunteerExperienceLines);
     }
 
     /**
@@ -626,60 +664,27 @@ class Parser
     }
 
     /**
-     * @param string $roleLine
-     * @return array
+     * @param string $fontDesignation
+     * @param array  $fonts
+     * @return Font
      * @throws ParseException
      */
-    protected function parseRoleParts(string $roleLine): array
+    protected function getFont($fontDesignation, $fonts): Font
     {
-        $roleParts = $this->splitAndTrim('  at  ', $roleLine);
-
-        if (count($roleParts) === 2) {
-            return $roleParts;
-        } else {
-            throw new ParseException("There was an error parsing the job title and organisation from the role line '${roleLine}'");
+        if ( ! isset($fonts[$fontDesignation])) {
+            throw new ParseException("Unable to find a suitable font matching token ${fontDesignation}");
         }
+
+        return $fonts[$fontDesignation];
     }
 
     /**
-     * @param string $delimiter
-     * @param string $string
-     * @return array
+     * @param string $textLine
+     * @return bool
      */
-    protected function splitAndTrim(string $delimiter, string $string): array
+    protected function isRoleDescriptionLine(string $textLine): bool
     {
-        return array_map(
-            'trim',
-            explode($delimiter, $string)
-        );
-    }
-
-    /**
-     * @param string $datesLine
-     * @return array
-     * @throws ParseException
-     */
-    protected function parseRoleDates(string $datesLine): array
-    {
-        $dateParts = $this->splitAndTrim('-', $datesLine);
-
-        if (count($dateParts) === 2) {
-
-            $startDateTime = $this->parseStringToDateTime($dateParts[0]);
-
-            if ($dateParts[1] === 'Present') {
-                $endDateTime = null;
-            } else {
-                $endDateTime = $this->parseStringToDateTime($dateParts[1]);
-            }
-
-            return [
-                $startDateTime,
-                $endDateTime,
-            ];
-        } else {
-            throw new ParseException("There was an error parsing the role dates from the line '${datesLine}'");
-        }
+        return preg_match('/\s{2}at\s{3}/', $textLine);
     }
 
     /**

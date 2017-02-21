@@ -2,6 +2,13 @@
 
 namespace LinkedInResumeParser\Pdf;
 
+use Smalot\PdfParser\Font;
+
+/**
+ * Class TextLine
+ *
+ * @package LinkedInResumeParser\Pdf
+ */
 class TextLine
 {
     /**
@@ -15,15 +22,31 @@ class TextLine
     protected $bold;
 
     /**
+     * @var Font
+     */
+    protected $font;
+
+    /**
      * TextLine constructor.
      *
      * @param string $text
-     * @param bool $bold
+     * @param Font   $font
      */
-    public function __construct(string $text, bool $bold)
+    public function __construct(string $text, Font $font)
     {
+        $this->font = $font;
+        $this->bold = $this->isFontBold($font);
         $this->text = $text;
-        $this->bold = $bold;
+    }
+
+    /**
+     * @param Font $font
+     * @return bool
+     */
+    protected function isFontBold(Font $font): bool
+    {
+        $fontName = $font->get('BaseFont')->getContent();
+        return stripos($fontName, 'bold') !== false;
     }
 
     /**
