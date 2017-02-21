@@ -37,7 +37,7 @@ class ParserTest extends TestCase
     public function testSingleSample()
     {
         $parser = new Parser();
-        $result = $parser->parse($this->samplePath . '/JacobStelman.pdf');
+        $result = $parser->parse($this->samplePath . '/RossKinsman.pdf');
         $this->assertInstanceOf(ParsedResume::class, $result);
     }
 

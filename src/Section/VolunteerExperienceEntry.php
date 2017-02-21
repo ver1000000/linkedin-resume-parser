@@ -138,6 +138,16 @@ class VolunteerExperienceEntry implements RoleInterface, JsonSerializable
     }
 
     /**
+     * @param string $titlePart
+     * @return RoleInterface
+     */
+    public function appendTitle(string $titlePart): RoleInterface
+    {
+        $this->title .= $titlePart;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize(): array
