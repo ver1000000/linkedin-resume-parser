@@ -10,7 +10,7 @@ use JsonSerializable;
  *
  * @package LinkedInResumeParser
  */
-class Role implements JsonSerializable, RoleInterface
+class Role implements JsonSerializable, RoleInterface, Arrayable
 {
     /**
      * @var string
@@ -132,12 +132,22 @@ class Role implements JsonSerializable, RoleInterface
      */
     public function jsonSerialize(): array
     {
+        return $this->toArray();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
         return [
             'jobTitle'     => $this->title,
             'organisation' => $this->organisation,
             'summary'      => $this->summary,
-            'start'        => $this->start ? $this->start->format('Y-m-d H:i:s') : null,
-            'end'          => $this->end ? $this->end->format('Y-m-d H:i:s') : null,
+            'start'        => $this->start ?? null,
+            'end'          => $this->end ?? null,
         ];
     }
 }

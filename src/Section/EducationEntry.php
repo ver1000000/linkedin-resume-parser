@@ -9,7 +9,7 @@ use JsonSerializable;
  *
  * @package LinkedInResumeParser\Section
  */
-class EducationEntry implements JsonSerializable
+class EducationEntry implements JsonSerializable, Arrayable
 {
     /**
      * @var string
@@ -155,22 +155,6 @@ class EducationEntry implements JsonSerializable
     }
 
     /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'degreeLevel'            => $this->degreeLevel,
-            'degree'                 => $this->degree,
-            'institution'            => $this->institution,
-            'grade'                  => $this->grade,
-            'activitiesAndSocieties' => $this->activitiesAndSocieties,
-            'start'                  => $this->start,
-            'end'                    => $this->end,
-        ];
-    }
-
-    /**
      * @return string
      */
     public function getActivitiesAndSocieties(): string
@@ -186,5 +170,31 @@ class EducationEntry implements JsonSerializable
     {
         $this->activitiesAndSocieties = $activitiesAndSocieties;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'degreeLevel'            => $this->degreeLevel,
+            'degree'                 => $this->degree,
+            'institution'            => $this->institution,
+            'grade'                  => $this->grade,
+            'activitiesAndSocieties' => $this->activitiesAndSocieties,
+            'start'                  => $this->start,
+            'end'                    => $this->end,
+        ];
     }
 }

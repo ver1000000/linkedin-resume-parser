@@ -3,6 +3,7 @@
 namespace LinkedInResumeParser;
 
 use JsonSerializable;
+use LinkedInResumeParser\Section\Arrayable;
 use LinkedInResumeParser\Section\Certification;
 use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
@@ -14,7 +15,7 @@ use LinkedInResumeParser\Section\VolunteerExperienceEntry;
  *
  * @package LinkedInResumeParser
  */
-class ParsedResume implements JsonSerializable
+class ParsedResume implements JsonSerializable, Arrayable
 {
     /**
      * @var string
@@ -218,7 +219,7 @@ class ParsedResume implements JsonSerializable
     /**
      * @return string
      */
-    public function getSummary(): string
+    public function getSummary()
     {
         return $this->summary;
     }
@@ -292,18 +293,39 @@ class ParsedResume implements JsonSerializable
      */
     public function jsonSerialize(): array
     {
+        return $this->toArray();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
         return [
             'name'                       => $this->name,
             'emailAddress'               => $this->emailAddress,
             'summary'                    => $this->summary,
             'interests'                  => $this->interests,
             'skills'                     => $this->skills,
-            'currentRole'                => $this->currentRole,
-            'previousRoles'              => $this->previousRoles,
-            'educationEntries'           => $this->educationEntries,
-            'certifications'             => $this->certifications,
-            'volunteerExperienceEntries' => $this->volunteerExperienceEntries,
-            'languages'                  => $this->languages,
+            'currentRole'                => $this->currentRole ? $this->currentRole->toArray() : null,
+            'previousRoles'              => $this->itemsToArray($this->previousRoles),
+            'educationEntries'           => $this->itemsToArray($this->educationEntries),
+            'certifications'             => $this->itemsToArray($this->certifications),
+            'volunteerExperienceEntries' => $this->itemsToArray($this->volunteerExperienceEntries),
+            'languages'                  => $this->itemsToArray($this->languages),
         ];
+    }
+
+    /**
+     * @param array $items
+     * @return array
+     */
+    protected function itemsToArray(array $items)
+    {
+        return array_map(function (Arrayable $item) {
+            return $item->toArray();
+        }, $items);
     }
 }

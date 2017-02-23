@@ -9,7 +9,7 @@ use JsonSerializable;
  *
  * @package LinkedInResumeParser\Section
  */
-class Language implements JsonSerializable
+class Language implements JsonSerializable, Arrayable
 {
     /**
      * @var string
@@ -61,6 +61,16 @@ class Language implements JsonSerializable
      * @return array
      */
     public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
     {
         return [
             'language' => $this->language,

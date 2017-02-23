@@ -10,7 +10,7 @@ use JsonSerializable;
  *
  * @package LinkedInResumeParser\Section
  */
-class Certification implements JsonSerializable
+class Certification implements JsonSerializable, Arrayable
 {
     /**
      * @var string
@@ -110,19 +110,6 @@ class Certification implements JsonSerializable
     }
 
     /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'title'      => $this->title,
-            'license'    => $this->license,
-            'authority'  => $this->authority,
-            'obtainedOn' => $this->obtainedOn ? $this->obtainedOn->format('Y-m-d H:i:s') : null,
-        ];
-    }
-
-    /**
      * @return DateTimeInterface|null
      */
     public function getValidUntil()
@@ -138,5 +125,28 @@ class Certification implements JsonSerializable
     {
         $this->validUntil = $validUntil;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'title'      => $this->title,
+            'license'    => $this->license,
+            'authority'  => $this->authority,
+            'obtainedOn' => $this->obtainedOn ?? null,
+        ];
     }
 }
