@@ -14,12 +14,12 @@ class EducationEntry implements JsonSerializable, Arrayable
     /**
      * @var string
      */
-    protected $degreeLevel;
+    protected $level;
 
     /**
      * @var string
      */
-    protected $degree;
+    protected $courseTitle;
 
     /**
      * @var string
@@ -67,36 +67,36 @@ class EducationEntry implements JsonSerializable, Arrayable
     /**
      * @return string
      */
-    public function getDegreeLevel(): string
+    public function getLevel(): string
     {
-        return $this->degreeLevel;
+        return $this->level;
     }
 
     /**
-     * @param string $degreeLevel
+     * @param string $level
      * @return EducationEntry
      */
-    public function setDegreeLevel(string $degreeLevel): EducationEntry
+    public function setLevel(string $level): EducationEntry
     {
-        $this->degreeLevel = $degreeLevel;
+        $this->level = $level;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getDegree(): string
+    public function getCourseTitle(): string
     {
-        return $this->degree;
+        return $this->courseTitle;
     }
 
     /**
-     * @param string $degree
+     * @param string $courseTitle
      * @return EducationEntry
      */
-    public function setDegree(string $degree): EducationEntry
+    public function setCourseTitle(string $courseTitle): EducationEntry
     {
-        $this->degree = $degree;
+        $this->courseTitle = $courseTitle;
         return $this;
     }
 
@@ -188,8 +188,8 @@ class EducationEntry implements JsonSerializable, Arrayable
     public function toArray()
     {
         return [
-            'degree_level'             => $this->degreeLevel,
-            'degree'                   => $this->degree,
+            'level'                    => $this->level,
+            'course_title'             => $this->courseTitle,
             'institution'              => $this->institution,
             'grade'                    => $this->grade,
             'activities_and_societies' => $this->activitiesAndSocieties,
