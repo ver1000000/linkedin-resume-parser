@@ -2,6 +2,7 @@
 
 namespace LinkedInResumeParser\Section;
 
+use DateTimeInterface;
 use JsonSerializable;
 
 /**
@@ -37,12 +38,12 @@ class EducationEntry implements JsonSerializable, Arrayable
     protected $activitiesAndSocieties;
 
     /**
-     * @var string
+     * @var DateTimeInterface
      */
     protected $start;
 
     /**
-     * @var string
+     * @var DateTimeInterface
      */
     protected $end;
 
@@ -119,18 +120,18 @@ class EducationEntry implements JsonSerializable, Arrayable
     }
 
     /**
-     * @return string
+     * @return DateTimeInterface
      */
-    public function getStart(): string
+    public function getStart()
     {
         return $this->start;
     }
 
     /**
-     * @param string $start
+     * @param DateTimeInterface $start
      * @return EducationEntry
      */
-    public function setStart(string $start): EducationEntry
+    public function setStart(DateTimeInterface $start = null): EducationEntry
     {
         $this->start = $start;
         return $this;
@@ -145,10 +146,10 @@ class EducationEntry implements JsonSerializable, Arrayable
     }
 
     /**
-     * @param string $end
+     * @param DateTimeInterface $end
      * @return EducationEntry
      */
-    public function setEnd(string $end = null): EducationEntry
+    public function setEnd(DateTimeInterface $end = null): EducationEntry
     {
         $this->end = $end;
         return $this;

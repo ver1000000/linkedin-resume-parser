@@ -519,21 +519,21 @@ class Parser
                 $educationEntry
                     ->setLevel($matches[1])
                     ->setCourseTitle($matches[2])
-                    ->setStart($matches[3])
-                    ->setEnd($matches[4]);
+                    ->setStart($this->parseStringToDateTime($matches[3]))
+                    ->setEnd($this->parseStringToDateTime($matches[4]));
             } elseif (preg_match('/(.*?)\,\s(.*?)\,\s(\d{4})$/', $educationLine, $matches)) { // "Bachelor’s Degree, Biomedical Engineering, 2014"
                 $educationEntry
                     ->setLevel($matches[1])
                     ->setCourseTitle($matches[2])
-                    ->setEnd($matches[3]);
+                    ->setEnd($this->parseStringToDateTime($matches[3]));
             } elseif (preg_match('/(.*?),\s(\d{4})/', $educationLine, $matches)) { // "High School, 2009"
                 $educationEntry
                     ->setLevel($matches[1])
-                    ->setEnd($matches[2]);
+                    ->setEnd($this->parseStringToDateTime($matches[2]));
             } elseif (preg_match('/(\d{4})\s-\s(\d{4})/', $educationLine, $matches)) { // "2002 - 2006"
                 $educationEntry
-                    ->setStart($matches[1])
-                    ->setEnd($matches[2]);
+                    ->setStart($this->parseStringToDateTime($matches[1]))
+                    ->setEnd($this->parseStringToDateTime($matches[2]));
             } elseif (trim($educationLine) === 'Activities and Societies:') { // "Activities and Societies: "
                 // At least one line belongs to "Activities and Societies"
                 $activitiesAndSocieties = $educationLines[$i + 1];
