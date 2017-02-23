@@ -143,7 +143,7 @@ class Role implements JsonSerializable, RoleInterface, Arrayable
     public function toArray()
     {
         return [
-            'jobTitle'     => $this->title,
+            'title'        => $this->title,
             'organisation' => $this->organisation,
             'summary'      => $this->summary,
             'start'        => $this->start ?? null,

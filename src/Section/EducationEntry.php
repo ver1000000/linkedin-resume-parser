@@ -188,13 +188,13 @@ class EducationEntry implements JsonSerializable, Arrayable
     public function toArray()
     {
         return [
-            'degreeLevel'            => $this->degreeLevel,
-            'degree'                 => $this->degree,
-            'institution'            => $this->institution,
-            'grade'                  => $this->grade,
-            'activitiesAndSocieties' => $this->activitiesAndSocieties,
-            'start'                  => $this->start,
-            'end'                    => $this->end,
+            'degree_level'             => $this->degreeLevel,
+            'degree'                   => $this->degree,
+            'institution'              => $this->institution,
+            'grade'                    => $this->grade,
+            'activities_and_societies' => $this->activitiesAndSocieties,
+            'start'                    => $this->start,
+            'end'                      => $this->end,
         ];
     }
 }

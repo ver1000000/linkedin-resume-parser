@@ -143,10 +143,10 @@ class Certification implements JsonSerializable, Arrayable
     public function toArray()
     {
         return [
-            'title'      => $this->title,
-            'license'    => $this->license,
-            'authority'  => $this->authority,
-            'obtainedOn' => $this->obtainedOn ?? null,
+            'title'       => $this->title,
+            'license'     => $this->license,
+            'authority'   => $this->authority,
+            'obtained_on' => $this->obtainedOn ?? null,
         ];
     }
 }
