@@ -145,7 +145,7 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
-     * @return string | null
+     * @return DateTimeInterface | null
      */
     public function getEnd()
     {
