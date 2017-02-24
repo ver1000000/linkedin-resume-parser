@@ -2,16 +2,23 @@
 
 namespace LinkedInResumeParser\Section;
 
+use ArrayAccess;
 use DateTimeInterface;
 use JsonSerializable;
+use LinkedInResumeParser\Traits\ArrayAccessible;
 
 /**
  * Class Role
  *
  * @package LinkedInResumeParser
  */
-class Role implements JsonSerializable, RoleInterface, Arrayable
+class Role implements JsonSerializable, RoleInterface, Arrayable, ArrayAccess
 {
+    /**
+     * Array Access Trait
+     */
+    use ArrayAccessible;
+
     /**
      * @var string
      */

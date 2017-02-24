@@ -2,6 +2,7 @@
 
 namespace LinkedInResumeParser;
 
+use ArrayAccess;
 use JsonSerializable;
 use LinkedInResumeParser\Section\Arrayable;
 use LinkedInResumeParser\Section\Certification;
@@ -9,14 +10,20 @@ use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
+use LinkedInResumeParser\Traits\ArrayAccessible;
 
 /**
  * Class ParsedResume
  *
  * @package LinkedInResumeParser
  */
-class ParsedResume implements JsonSerializable, Arrayable
+class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
 {
+    /**
+     * Array Access Trait
+     */
+    use ArrayAccessible;
+
     /**
      * @var string
      */
