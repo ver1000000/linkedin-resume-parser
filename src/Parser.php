@@ -13,6 +13,7 @@ use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\RoleInterface;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
+use LinkedInResumeParser\Section\HonorAward;
 use Smalot\PdfParser\Document;
 use Smalot\PdfParser\Font;
 use Smalot\PdfParser\Parser as PdfParser;
@@ -132,10 +133,12 @@ class Parser
         $interests = $this->getInterests($textLines);
         $parsedResumeInstance->setInterests($interests);
 
+        $honorsAndAwards = $this->getHonorsAndAwards($textLines);
+        $parsedResumeInstance->setHonorsAndAwards($honorsAndAwards);
+
 //        $this->getOrganizations($textLines);
 //        $this->getCourses($textLines);
 //        $this->getProjects($textLines);
-//        $this->getHonorsAndAwards($textLines);
 
         return $parsedResumeInstance;
     }
@@ -224,7 +227,7 @@ class Parser
      * Check if the given index is indicative of being a Page designation
      * e.g. current index will be "Page" and then the immediate index will be the number
      *
-     * @param int   $index
+     * @param int $index
      * @param array $textLines
      * @return bool
      */
@@ -234,7 +237,7 @@ class Parser
     }
 
     /**
-     * @param array    $textLines
+     * @param array $textLines
      * @param TextLine $name
      * @return TextLine[]
      */
@@ -286,8 +289,8 @@ class Parser
 
     /**
      * @param string $sectionTitle
-     * @param array  $textLines
-     * @return array
+     * @param array $textLines
+     * @return TextLine[]
      */
     protected function findSectionLines(string $sectionTitle, array $textLines): array
     {
@@ -303,7 +306,7 @@ class Parser
     }
 
     /**
-     * @param int   $startIndex
+     * @param int $startIndex
      * @param array $textLines
      * @return int
      */
@@ -349,7 +352,7 @@ class Parser
     }
 
     /**
-     * @param string     $classType
+     * @param string $classType
      * @param TextLine[] $roleLines
      * @return array
      * @throws ParseException
@@ -553,7 +556,7 @@ class Parser
                 $educationEntry->setGrade($educationLines[$i + 1]);
                 $i++;
             } else {
-                // If we can't identify this line, it likely marks the start of a new education entry, so add it to the list of entries and start a new one.
+                // If this line doesn't match anything else, it likely marks the start of a new education entry, so add it to the list of entries and start a new one.
                 if (isset($educationEntry)) {
                     $educationEntries[] = $educationEntry;
                 }
@@ -594,7 +597,7 @@ class Parser
 
     /**
      * @param Certification $certification
-     * @param string        $textLine
+     * @param string $textLine
      * @return Certification
      * @throws ParseException
      */
@@ -664,52 +667,6 @@ class Parser
     }
 
     /**
-     * @param string $fontDesignation
-     * @param array  $fonts
-     * @return Font
-     * @throws ParseException
-     */
-    protected function getFont($fontDesignation, $fonts): Font
-    {
-        if ( ! isset($fonts[$fontDesignation])) {
-            throw new ParseException("Unable to find a suitable font matching token ${fontDesignation}");
-        }
-
-        return $fonts[$fontDesignation];
-    }
-
-    /**
-     * @param string $textLine
-     * @return bool
-     */
-    protected function isRoleDescriptionLine(string $textLine): bool
-    {
-        return preg_match('/\s{2}at\s{3}/', $textLine);
-    }
-
-    /**
-     * @param string $educationLine
-     * @return array
-     */
-    protected function parseEducationParts(string $educationLine): array
-    {
-        $parts = $this->splitAndTrim(',', $educationLine);
-
-        $partsCount = count($parts);
-
-        $degreeLevel = $parts[0];
-        $degree = implode(', ', array_slice($parts, 1, $partsCount - 2));
-        $dateParts = $this->splitAndTrim('-', $parts[$partsCount - 1]);
-
-        return [
-            $degreeLevel,
-            $degree,
-            $dateParts[0],
-            $dateParts[1],
-        ];
-    }
-
-    /**
      * @param array $textLines
      * @return array
      */
@@ -754,14 +711,91 @@ class Parser
     /**
      * @param array $textLines
      * @return array
+     * @throws ParseException
      */
     protected function getHonorsAndAwards(array $textLines)
     {
         $honorsAndAwardsLines = $this->findSectionLines(self::HONORS_AND_AWARDS_TITLE, $textLines);
 
-        if (count($honorsAndAwardsLines)) {
+        $honorsAndAwards = [];
+
+        $previousLineType = '';
+
+        /** @var HonorAward $honorAward */
+        foreach ($honorsAndAwardsLines as $honorsAndAwardsLine) {
+
+            $honorsAndAwardsLineText = $honorsAndAwardsLine->getText();
+
+            if ($honorsAndAwardsLine->isBold()) {
+                if (isset($honorAward)) {
+                    $honorsAndAwards[] = $honorAward;
+                }
+                $honorAward = (new HonorAward())->setTitle($honorsAndAwardsLineText);
+                $previousLineType = 'title';
+            } elseif (preg_match('/^\w{1,}\s\d{4}$/', $honorsAndAwardsLineText)) {
+                $honorAward->setDate($this->parseStringToDateTime($honorsAndAwardsLineText));
+                $previousLineType = 'date';
+            } elseif ($previousLineType === 'title') {
+                $honorAward->setInstitution($honorsAndAwardsLineText);
+                $previousLineType = 'institution';
+            } elseif ($previousLineType === 'date' || $previousLineType == 'summary') {
+                $honorAward->appendSummary($honorsAndAwardsLineText);
+                $previousLineType = 'summary';
+            } else {
+                throw new ParseException("Unable to parse honor/award line '${honorsAndAwardsLineText}'");
+            }
         }
 
-        return [];
+        if (isset($honorAward)) {
+            $honorsAndAwards[] = $honorAward;
+        }
+
+        return $honorsAndAwards;
+    }
+
+    /**
+     * @param string $fontDesignation
+     * @param array $fonts
+     * @return Font
+     * @throws ParseException
+     */
+    protected function getFont($fontDesignation, $fonts): Font
+    {
+        if ( ! isset($fonts[$fontDesignation])) {
+            throw new ParseException("Unable to find a suitable font matching token ${fontDesignation}");
+        }
+
+        return $fonts[$fontDesignation];
+    }
+
+    /**
+     * @param string $textLine
+     * @return bool
+     */
+    protected function isRoleDescriptionLine(string $textLine): bool
+    {
+        return preg_match('/\s{2}at\s{3}/', $textLine);
+    }
+
+    /**
+     * @param string $educationLine
+     * @return array
+     */
+    protected function parseEducationParts(string $educationLine): array
+    {
+        $parts = $this->splitAndTrim(',', $educationLine);
+
+        $partsCount = count($parts);
+
+        $degreeLevel = $parts[0];
+        $degree = implode(', ', array_slice($parts, 1, $partsCount - 2));
+        $dateParts = $this->splitAndTrim('-', $parts[$partsCount - 1]);
+
+        return [
+            $degreeLevel,
+            $degree,
+            $dateParts[0],
+            $dateParts[1],
+        ];
     }
 }

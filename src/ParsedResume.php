@@ -7,6 +7,7 @@ use JsonSerializable;
 use LinkedInResumeParser\Section\Arrayable;
 use LinkedInResumeParser\Section\Certification;
 use LinkedInResumeParser\Section\EducationEntry;
+use LinkedInResumeParser\Section\HonorAward;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
@@ -78,6 +79,11 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
      * @var Language[]
      */
     protected $languages = [];
+
+    /**
+     * @var HonorAward[]
+     */
+    protected $honorsAndAwards = [];
 
     /**
      * @return string
@@ -296,6 +302,22 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
+     * @return HonorAward[]
+     */
+    public function getHonorsAndAwards(): array
+    {
+        return $this->honorsAndAwards;
+    }
+
+    /**
+     * @param HonorAward[] $honorsAndAwards
+     */
+    public function setHonorsAndAwards(array $honorsAndAwards)
+    {
+        $this->honorsAndAwards = $honorsAndAwards;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize(): array
@@ -322,6 +344,7 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
             'certifications'             => $this->itemsToArray($this->certifications),
             'volunteerExperienceEntries' => $this->itemsToArray($this->volunteerExperienceEntries),
             'languages'                  => $this->itemsToArray($this->languages),
+            'honorsAndAwards'            => $this->itemsToArray($this->honorsAndAwards),
         ];
     }
 
