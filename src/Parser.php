@@ -10,6 +10,7 @@ use LinkedInResumeParser\Pdf\TextLine;
 use LinkedInResumeParser\Section\Certification;
 use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
+use LinkedInResumeParser\Section\Organization;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\RoleInterface;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
@@ -136,7 +137,9 @@ class Parser
         $honorsAndAwards = $this->getHonorsAndAwards($textLines);
         $parsedResumeInstance->setHonorsAndAwards($honorsAndAwards);
 
-//        $this->getOrganizations($textLines);
+        $organizations = $this->getOrganizations($textLines);
+        $parsedResumeInstance->setOrganizations($organizations);
+
 //        $this->getCourses($textLines);
 //        $this->getProjects($textLines);
 
@@ -400,7 +403,7 @@ class Parser
                 ->setOrganisation($organisation);
 
             if ($roleGroup['date']) {
-                list($start, $end) = $this->parseRoleDates($roleGroup['date']);
+                list($start, $end) = $this->parseDateRange($roleGroup['date'], ' - ');
 
                 $roleType
                     ->setStart($start)
@@ -448,12 +451,13 @@ class Parser
 
     /**
      * @param string $datesLine
+     * @param string $delimiter
      * @return array
      * @throws ParseException
      */
-    protected function parseRoleDates(string $datesLine): array
+    protected function parseDateRange(string $datesLine, string $delimiter): array
     {
-        $dateParts = $this->splitAndTrim('-', $datesLine);
+        $dateParts = $this->splitAndTrim($delimiter, $datesLine);
 
         if (count($dateParts) === 2) {
 
@@ -470,7 +474,7 @@ class Parser
                 $endDateTime,
             ];
         } else {
-            throw new ParseException("There was an error parsing the role dates from the line '${datesLine}'");
+            throw new ParseException("There was an error parsing the date range from the line '${datesLine}'");
         }
     }
 
@@ -669,43 +673,50 @@ class Parser
     /**
      * @param array $textLines
      * @return array
+     * @throws ParseException
      */
     protected function getOrganizations(array $textLines)
     {
         $organizationLines = $this->findSectionLines(self::ORGANIZATIONS_TITLE, $textLines);
 
-        if (count($organizationLines)) {
+        $organizations = [];
+
+        $previousLineType = '';
+
+        /** @var Organization $organization */
+
+        foreach ($organizationLines as $organizationLine) {
+
+            $organizationLineText = $organizationLine->getText();
+
+            if ($organizationLine->isBold()) {
+                if (isset($organization)) {
+                    $organizations[] = $organization;
+                }
+                $organization = (new Organization())->setName($organizationLineText);
+                $previousLineType = 'name';
+            } elseif (preg_match('/^\w+\s\d{4}\sto\sPresent$/', $organizationLineText) || preg_match('/^\w+\s\d{4}\sto\s\w+\s\d{4}$/', $organizationLineText)) {
+                list($start, $end) = $this->parseDateRange($organizationLineText, ' to ');
+                $organization
+                    ->setStart($start)
+                    ->setEnd($end);
+                $previousLineType = 'dates';
+            } elseif ($previousLineType === 'name') {
+                $organization->setTitle($organizationLineText);
+                $previousLineType = 'title';
+            } elseif ($previousLineType === 'dates' || $previousLineType == 'summary') {
+                $organization->appendSummary($organizationLineText);
+                $previousLineType = 'summary';
+            } else {
+                throw new ParseException("Unable to parse organization line '${organizationLineText}'");
+            }
         }
 
-        return [];
-    }
-
-    /**
-     * @param array $textLines
-     * @return array
-     */
-    protected function getCourses(array $textLines)
-    {
-        $courseLines = $this->findSectionLines(self::COURSES_TITLE, $textLines);
-
-        if (count($courseLines)) {
+        if (isset($organization)) {
+            $organizations[] = $organization;
         }
 
-        return [];
-    }
-
-    /**
-     * @param array $textLines
-     * @return array
-     */
-    protected function getProjects(array $textLines)
-    {
-        $projectLines = $this->findSectionLines(self::PROJECTS_TITLE, $textLines);
-
-        if (count($projectLines)) {
-        }
-
-        return [];
+        return $organizations;
     }
 
     /**
@@ -722,6 +733,7 @@ class Parser
         $previousLineType = '';
 
         /** @var HonorAward $honorAward */
+
         foreach ($honorsAndAwardsLines as $honorsAndAwardsLine) {
 
             $honorsAndAwardsLineText = $honorsAndAwardsLine->getText();
@@ -751,6 +763,34 @@ class Parser
         }
 
         return $honorsAndAwards;
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     */
+    protected function getCourses(array $textLines)
+    {
+        $courseLines = $this->findSectionLines(self::COURSES_TITLE, $textLines);
+
+        if (count($courseLines)) {
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array $textLines
+     * @return array
+     */
+    protected function getProjects(array $textLines)
+    {
+        $projectLines = $this->findSectionLines(self::PROJECTS_TITLE, $textLines);
+
+        if (count($projectLines)) {
+        }
+
+        return [];
     }
 
     /**
