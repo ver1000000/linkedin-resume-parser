@@ -12,6 +12,7 @@ use LinkedInResumeParser\Section\Course;
 use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Organization;
+use LinkedInResumeParser\Section\Project;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\RoleInterface;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
@@ -144,8 +145,8 @@ class Parser
         $courses = $this->getCourses($textLines);
         $parsedResumeInstance->setCourses($courses);
 
-//        $projects = $this->getProjects($textLines);
-//        $parsedResumeInstance->setProjects($projects);
+        $projects = $this->getProjects($textLines);
+        $parsedResumeInstance->setProjects($projects);
 
         return $parsedResumeInstance;
     }
@@ -685,7 +686,7 @@ class Parser
 
         $organizations = [];
 
-        $previousLineType = '';
+        $previousLineType = null;
 
         /** @var Organization $organization */
 
@@ -734,7 +735,7 @@ class Parser
 
         $honorsAndAwards = [];
 
-        $previousLineType = '';
+        $previousLineType = null;
 
         /** @var HonorAward $honorAward */
 
@@ -818,14 +819,57 @@ class Parser
     /**
      * @param array $textLines
      * @return array
+     * @throws ParseException
      */
     protected function getProjects(array $textLines)
     {
         $projectLines = $this->findSectionLines(self::PROJECTS_TITLE, $textLines);
 
-        if (count($projectLines)) {
+        $previousLineType = null;
+
+        $projects = [];
+
+        /** @var Project $project */
+
+        foreach ($projectLines as $projectLine) {
+
+            $projectLineText = $projectLine->getText();
+
+            if ($projectLine->isBold() && $previousLineType === 'name') {
+                $project->appendName($projectLineText);
+                $previousLineType = 'name';
+            } elseif ($projectLine->isBold() && $previousLineType !== 'name') {
+                if (isset($project)) {
+                    $projects[] = $project;
+                }
+
+                $project = (new Project())->setName($projectLineText);
+
+                $previousLineType = 'name';
+            } elseif (
+                preg_match('/^\w+\s\d{4}\sto\sPresent$/', $projectLineText) ||
+                preg_match('/^\w+\s\d{4}\sto\s\w+\s\d{4}$/', $projectLineText) ||
+                preg_match('/^\d{4}\sto\s\d{4}$/', $projectLineText) ||
+                preg_match('/^\d{4}\sto\sPresent$/', $projectLineText)
+            ) {
+                list($start, $end) = $this->parseDateRange($projectLineText, ' to ');
+                $project
+                    ->setStart($start)
+                    ->setEnd($end);
+                $previousLineType = 'dates';
+            } elseif (preg_match('/^Members\:(.*)/', $projectLineText, $matches)) {
+                $project->setMembers($this->splitAndTrim(',', $matches[1]));
+                $previousLineType = 'members';
+            } else {
+                $project->appendSummary($projectLineText);
+                $previousLineType = 'summary';
+            }
         }
 
-        return [];
+        if (isset($project)) {
+            $projects[] = $project;
+        }
+
+        return $projects;
     }
 }
