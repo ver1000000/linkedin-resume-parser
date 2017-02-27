@@ -10,9 +10,9 @@ use DateTimeInterface;
 interface RoleInterface
 {
     /**
-     * @return string
+     * @return string | null
      */
-    public function getTitle(): string;
+    public function getTitle();
 
     /**
      * @param string $title
@@ -21,9 +21,9 @@ interface RoleInterface
     public function setTitle(string $title): RoleInterface;
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getOrganisation(): string;
+    public function getOrganisation();
 
     /**
      * @param string $organisation
@@ -34,13 +34,13 @@ interface RoleInterface
     /**
      * @return DateTimeInterface
      */
-    public function getStart(): DateTimeInterface;
+    public function getStart();
 
     /**
      * @param DateTimeInterface $start
      * @return RoleInterface
      */
-    public function setStart(DateTimeInterface $start): RoleInterface;
+    public function setStart(DateTimeInterface $start = null): RoleInterface;
 
     /**
      * @return DateTimeInterface | null
@@ -56,7 +56,7 @@ interface RoleInterface
     /**
      * @return string
      */
-    public function getSummary(): string;
+    public function getSummary();
 
     /**
      * @param string $summary

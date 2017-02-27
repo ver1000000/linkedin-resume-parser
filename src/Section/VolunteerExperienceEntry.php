@@ -45,16 +45,16 @@ class VolunteerExperienceEntry implements RoleInterface, JsonSerializable, Array
     protected $summary;
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getTitle(): string
+    public function getTitle()
     {
         return $this->title;
     }
 
     /**
-     * @param string $title
-     * @return RoleInterface
+     * @param null|string $title
+     * @return VolunteerExperienceEntry | RoleInterface
      */
     public function setTitle(string $title): RoleInterface
     {
@@ -63,16 +63,16 @@ class VolunteerExperienceEntry implements RoleInterface, JsonSerializable, Array
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getOrganisation(): string
+    public function getOrganisation()
     {
         return $this->organisation;
     }
 
     /**
-     * @param string $organisation
-     * @return RoleInterface
+     * @param null|string $organisation
+     * @return VolunteerExperienceEntry | RoleInterface
      */
     public function setOrganisation(string $organisation): RoleInterface
     {
@@ -81,18 +81,36 @@ class VolunteerExperienceEntry implements RoleInterface, JsonSerializable, Array
     }
 
     /**
-     * @return DateTimeInterface
+     * @return null|string
      */
-    public function getStart(): DateTimeInterface
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * @param null|string $summary
+     * @return VolunteerExperienceEntry | RoleInterface
+     */
+    public function setSummary(string $summary): RoleInterface
+    {
+        $this->summary = $summary;
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getStart()
     {
         return $this->start;
     }
 
     /**
-     * @param DateTimeInterface $start
-     * @return RoleInterface
+     * @param DateTimeInterface|null $start
+     * @return VolunteerExperienceEntry | RoleInterface
      */
-    public function setStart(DateTimeInterface $start): RoleInterface
+    public function setStart(DateTimeInterface $start = null): RoleInterface
     {
         $this->start = $start;
         return $this;
@@ -108,29 +126,11 @@ class VolunteerExperienceEntry implements RoleInterface, JsonSerializable, Array
 
     /**
      * @param DateTimeInterface|null $end
-     * @return RoleInterface
+     * @return VolunteerExperienceEntry | RoleInterface
      */
     public function setEnd(DateTimeInterface $end = null): RoleInterface
     {
         $this->end = $end;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSummary(): string
-    {
-        return $this->summary;
-    }
-
-    /**
-     * @param string $summary
-     * @return RoleInterface
-     */
-    public function setSummary(string $summary): RoleInterface
-    {
-        $this->summary = $summary;
         return $this;
     }
 
