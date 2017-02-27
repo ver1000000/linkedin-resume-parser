@@ -162,7 +162,7 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
      */
     public function hasCurrentRole(): bool
     {
-        return ! $this->currentRole === null;
+        return ! ($this->currentRole === null);
     }
 
     /**
