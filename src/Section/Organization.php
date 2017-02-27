@@ -141,6 +141,9 @@ class Organization implements JsonSerializable, Arrayable, ArrayAccess
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return $this->toArray();

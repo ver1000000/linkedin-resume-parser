@@ -8,6 +8,7 @@ use LinkedInResumeParser\Exception\FileNotReadableException;
 use LinkedInResumeParser\Exception\ParseException;
 use LinkedInResumeParser\Pdf\TextLine;
 use LinkedInResumeParser\Section\Certification;
+use LinkedInResumeParser\Section\Course;
 use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Organization;
@@ -140,8 +141,11 @@ class Parser
         $organizations = $this->getOrganizations($textLines);
         $parsedResumeInstance->setOrganizations($organizations);
 
-//        $this->getCourses($textLines);
-//        $this->getProjects($textLines);
+        $courses = $this->getCourses($textLines);
+        $parsedResumeInstance->setCourses($courses);
+
+//        $projects = $this->getProjects($textLines);
+//        $parsedResumeInstance->setProjects($projects);
 
         return $parsedResumeInstance;
     }
@@ -768,15 +772,47 @@ class Parser
     /**
      * @param array $textLines
      * @return array
+     * @throws ParseException
      */
     protected function getCourses(array $textLines)
     {
         $courseLines = $this->findSectionLines(self::COURSES_TITLE, $textLines);
 
-        if (count($courseLines)) {
+        $courses = [];
+
+        $previousLineType = null;
+
+        /** @var Course $course */
+
+        foreach ($courseLines as $courseLine) {
+
+            $courseLineText = $courseLine->getText();
+
+            if ($courseLineText === '' || $courseLineText === '.') {
+                continue;
+            }
+
+            if ($courseLine->isBold()) {
+                if ( ! isset($course)) {
+                    $course = new Course();
+                }
+
+                $course->appendName($courseLineText);
+
+                $previousLineType = 'name';
+
+            } elseif ($previousLineType === 'name') {
+                if (isset($course)) {
+                    $courses[] = $course;
+                }
+
+                $course = new Course();
+
+                $previousLineType = 'misc';
+            }
         }
 
-        return [];
+        return $courses;
     }
 
     /**
@@ -791,51 +827,5 @@ class Parser
         }
 
         return [];
-    }
-
-    /**
-     * @param string $fontDesignation
-     * @param array $fonts
-     * @return Font
-     * @throws ParseException
-     */
-    protected function getFont($fontDesignation, $fonts): Font
-    {
-        if ( ! isset($fonts[$fontDesignation])) {
-            throw new ParseException("Unable to find a suitable font matching token ${fontDesignation}");
-        }
-
-        return $fonts[$fontDesignation];
-    }
-
-    /**
-     * @param string $textLine
-     * @return bool
-     */
-    protected function isRoleDescriptionLine(string $textLine): bool
-    {
-        return preg_match('/\s{2}at\s{3}/', $textLine);
-    }
-
-    /**
-     * @param string $educationLine
-     * @return array
-     */
-    protected function parseEducationParts(string $educationLine): array
-    {
-        $parts = $this->splitAndTrim(',', $educationLine);
-
-        $partsCount = count($parts);
-
-        $degreeLevel = $parts[0];
-        $degree = implode(', ', array_slice($parts, 1, $partsCount - 2));
-        $dateParts = $this->splitAndTrim('-', $parts[$partsCount - 1]);
-
-        return [
-            $degreeLevel,
-            $degree,
-            $dateParts[0],
-            $dateParts[1],
-        ];
     }
 }
