@@ -20,7 +20,7 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     use ArrayAccessible;
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $level;
 
@@ -55,18 +55,18 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     protected $end;
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getLevel(): string
+    public function getLevel()
     {
         return $this->level;
     }
 
     /**
-     * @param string $level
+     * @param null|string $level
      * @return EducationEntry
      */
-    public function setLevel(string $level): EducationEntry
+    public function setLevel($level)
     {
         $this->level = $level;
         return $this;
