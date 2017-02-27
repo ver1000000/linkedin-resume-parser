@@ -25,7 +25,7 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     protected $level;
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $courseTitle;
 
@@ -35,42 +35,24 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     protected $institution;
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $grade;
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $activitiesAndSocieties;
 
     /**
-     * @var DateTimeInterface
+     * @var DateTimeInterface | null
      */
     protected $start;
 
     /**
-     * @var DateTimeInterface
+     * @var DateTimeInterface | null
      */
     protected $end;
-
-    /**
-     * @return string | null
-     */
-    public function getGrade()
-    {
-        return $this->grade;
-    }
-
-    /**
-     * @param string $grade
-     * @return EducationEntry
-     */
-    public function setGrade(string $grade = null): EducationEntry
-    {
-        $this->grade = $grade;
-        return $this;
-    }
 
     /**
      * @return string
@@ -91,18 +73,18 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getCourseTitle(): string
+    public function getCourseTitle()
     {
         return $this->courseTitle;
     }
 
     /**
-     * @param string $courseTitle
+     * @param null|string $courseTitle
      * @return EducationEntry
      */
-    public function setCourseTitle(string $courseTitle): EducationEntry
+    public function setCourseTitle($courseTitle)
     {
         $this->courseTitle = $courseTitle;
         return $this;
@@ -127,7 +109,43 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
-     * @return DateTimeInterface
+     * @return null|string
+     */
+    public function getGrade()
+    {
+        return $this->grade;
+    }
+
+    /**
+     * @param null|string $grade
+     * @return EducationEntry
+     */
+    public function setGrade($grade)
+    {
+        $this->grade = $grade;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getActivitiesAndSocieties()
+    {
+        return $this->activitiesAndSocieties;
+    }
+
+    /**
+     * @param null|string $activitiesAndSocieties
+     * @return EducationEntry
+     */
+    public function setActivitiesAndSocieties($activitiesAndSocieties)
+    {
+        $this->activitiesAndSocieties = $activitiesAndSocieties;
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
      */
     public function getStart()
     {
@@ -135,17 +153,17 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
-     * @param DateTimeInterface $start
+     * @param DateTimeInterface|null $start
      * @return EducationEntry
      */
-    public function setStart(DateTimeInterface $start = null): EducationEntry
+    public function setStart($start)
     {
         $this->start = $start;
         return $this;
     }
 
     /**
-     * @return DateTimeInterface | null
+     * @return DateTimeInterface|null
      */
     public function getEnd()
     {
@@ -153,30 +171,12 @@ class EducationEntry implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
-     * @param DateTimeInterface $end
+     * @param DateTimeInterface|null $end
      * @return EducationEntry
      */
-    public function setEnd(DateTimeInterface $end = null): EducationEntry
+    public function setEnd($end)
     {
         $this->end = $end;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getActivitiesAndSocieties(): string
-    {
-        return $this->activitiesAndSocieties;
-    }
-
-    /**
-     * @param string $activitiesAndSocieties
-     * @return EducationEntry
-     */
-    public function setActivitiesAndSocieties(string $activitiesAndSocieties): EducationEntry
-    {
-        $this->activitiesAndSocieties = $activitiesAndSocieties;
         return $this;
     }
 
