@@ -184,6 +184,18 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
+     * @return Role[]
+     */
+    public function getAllRoles(): array
+    {
+        if ($this->hasCurrentRole()) {
+            return array_merge([$this->getCurrentRole()], $this->getPreviousRoles());
+        } else {
+            return $this->getPreviousRoles();
+        }
+    }
+
+    /**
      * @return \string[]
      */
     public function getSkills(): array
