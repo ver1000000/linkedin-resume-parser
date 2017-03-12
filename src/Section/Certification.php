@@ -25,7 +25,7 @@ class Certification implements JsonSerializable, Arrayable, ArrayAccess
     protected $title;
 
     /**
-     * @var string
+     * @var string | null
      */
     protected $license;
 
@@ -81,9 +81,9 @@ class Certification implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getLicense(): string
+    public function getLicense()
     {
         return $this->license;
     }
