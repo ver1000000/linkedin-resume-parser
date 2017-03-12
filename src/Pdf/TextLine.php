@@ -22,6 +22,11 @@ class TextLine
     protected $bold;
 
     /**
+     * @var bool
+     */
+    protected $italics;
+
+    /**
      * @var Font
      */
     protected $font;
@@ -36,6 +41,7 @@ class TextLine
     {
         $this->font = $font;
         $this->bold = $this->isFontBold($font);
+        $this->italics = $this->isFontItalics($font);
         $this->text = $text;
     }
 
@@ -47,6 +53,16 @@ class TextLine
     {
         $fontName = $font->get('BaseFont')->getContent();
         return stripos($fontName, 'bold') !== false;
+    }
+
+    /**
+     * @param Font $font
+     * @return bool
+     */
+    protected function isFontItalics(Font $font): bool
+    {
+        $fontName = $font->get('BaseFont')->getContent();
+        return stripos($fontName, 'italic') !== false;
     }
 
     /**
@@ -71,5 +87,13 @@ class TextLine
     public function isBold(): bool
     {
         return $this->bold;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isItalics(): bool
+    {
+        return $this->italics;
     }
 }
