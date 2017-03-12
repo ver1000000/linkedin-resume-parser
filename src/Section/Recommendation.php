@@ -108,6 +108,24 @@ class Recommendation implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
+     * @return string
+     */
+    public function getPosition(): string
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param string $position
+     * @return Recommendation
+     */
+    public function setPosition(string $position): Recommendation
+    {
+        $this->position = $position;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize()
@@ -128,23 +146,5 @@ class Recommendation implements JsonSerializable, Arrayable, ArrayAccess
             'position' => $this->position,
             'relation' => $this->relation,
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getPosition(): string
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param string $position
-     * @return Recommendation
-     */
-    public function setPosition(string $position): Recommendation
-    {
-        $this->position = $position;
-        return $this;
     }
 }
