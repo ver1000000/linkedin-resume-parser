@@ -44,13 +44,13 @@ class Parser
     const COURSES = 'Courses';
     const PROJECTS = 'Projects';
     const HONORS_AND_AWARDS = 'Honors and Awards';
-    const RECOMMENDATIONS = '???';
 
     /**
      * Constants that designate other parts of the resume that don't classify as a section.
      */
     const NAME = 'Name';
     const EMAIL_ADDRESS = 'Email Address';
+    const RECOMMENDATIONS = 'Recommendations';
 
     /**
      * Section titles for each part of the resume
@@ -69,8 +69,7 @@ class Parser
         self::ORGANIZATIONS,
         self::COURSES,
         self::PROJECTS,
-        self::HONORS_AND_AWARDS,
-        self::RECOMMENDATIONS,
+        self::HONORS_AND_AWARDS
     ];
 
     /**
