@@ -471,7 +471,7 @@ class Parser
                 }
                 $roleGroups[$currentGroupIndex]['title'] .= ' ' . $roleLineText;
                 $previousLineWasBold = true;
-            } elseif ( ! preg_match('/\(.*\)/', $roleLineText)) { // This indicates the duration, so skip it.
+            } elseif ( ! preg_match('/^\(.*\)$/', $roleLineText)) { // This indicates the duration, so skip it.
                 $previousLineWasBold = false;
                 $roleGroups[$currentGroupIndex]['summary'] .= $roleLineText;
             }
