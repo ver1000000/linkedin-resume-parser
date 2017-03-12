@@ -16,6 +16,7 @@ use LinkedInResumeParser\Section\Project;
 use LinkedInResumeParser\Section\Recommendation;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\RoleInterface;
+use LinkedInResumeParser\Section\TestScore;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
 use LinkedInResumeParser\Section\HonorAward;
 use Smalot\PdfParser\Document;
@@ -44,6 +45,7 @@ class Parser
     const COURSES = 'Courses';
     const PROJECTS = 'Projects';
     const HONORS_AND_AWARDS = 'Honors and Awards';
+    const TEST_SCORES = 'Test Scores';
 
     /**
      * Constants that designate other parts of the resume that don't classify as a section.
@@ -69,7 +71,8 @@ class Parser
         self::ORGANIZATIONS,
         self::COURSES,
         self::PROJECTS,
-        self::HONORS_AND_AWARDS
+        self::HONORS_AND_AWARDS,
+        self::TEST_SCORES,
     ];
 
     /**
@@ -184,6 +187,11 @@ class Parser
         if ($this->shouldParseSection(self::PROJECTS, $sections)) {
             $projects = $this->getProjects($textLines);
             $parsedResumeInstance->setProjects($projects);
+        }
+
+        if ($this->shouldParseSection(self::TEST_SCORES, $sections)) {
+            $testScores = $this->getTestScores($textLines);
+            $parsedResumeInstance->setTestScores($testScores);
         }
 
         if ($this->shouldParseSection(self::RECOMMENDATIONS, $sections)) {
@@ -957,6 +965,41 @@ class Parser
         }
 
         return $projects;
+    }
+
+    /**
+     * @param TextLine[] $textLines
+     * @return array
+     */
+    protected function getTestScores(array $textLines)
+    {
+        $testScoreLines = $this->findSectionLines(self::TEST_SCORES, $textLines);
+
+        $testScores = [];
+
+        /** @var TestScore $testScore */
+
+        foreach ($testScoreLines as $testScoreLine) {
+
+            $testScoreLineText = $testScoreLine->getText();
+
+            if ($testScoreLine->isBold()) {
+                if (isset($testScore)) {
+                    $testScores[] = $testScore;
+                }
+
+                $testScore = (new TestScore())->setName($testScoreLineText);
+
+            } elseif (preg_match('/\s+Score:(.*)/', $testScoreLineText, $matches)) {
+                $testScore->setScore($matches[1]);
+            }
+        }
+
+        if (isset($testScore)) {
+            $testScores[] = $testScore;
+        }
+
+        return $testScores;
     }
 
     /**

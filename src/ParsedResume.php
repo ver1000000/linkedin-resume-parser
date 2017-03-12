@@ -14,6 +14,7 @@ use LinkedInResumeParser\Section\Organization;
 use LinkedInResumeParser\Section\Project;
 use LinkedInResumeParser\Section\Recommendation;
 use LinkedInResumeParser\Section\Role;
+use LinkedInResumeParser\Section\TestScore;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
 use LinkedInResumeParser\Traits\ArrayAccessible;
 
@@ -108,6 +109,11 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
      * @var Recommendation[]
      */
     protected $recommendations = [];
+
+    /**
+     * @var TestScore[]
+     */
+    protected $testScores = [];
 
     /**
      * @return string
@@ -428,6 +434,24 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
+     * @param TestScore[] $testScores
+     * @return ParsedResume
+     */
+    public function setTestScores(array $testScores): ParsedResume
+    {
+        $this->testScores = $testScores;
+        return $this;
+    }
+
+    /**
+     * @return TestScore[]
+     */
+    public function getTestScores(): array
+    {
+        return $this->testScores;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize(): array
@@ -458,6 +482,8 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
             'organizations'              => $this->itemsToArray($this->organizations),
             'courses'                    => $this->itemsToArray($this->courses),
             'projects'                   => $this->itemsToArray($this->projects),
+            'recommendations'            => $this->itemsToArray($this->recommendations),
+            'testScores'                 => $this->itemsToArray($this->testScores),
         ];
     }
 
