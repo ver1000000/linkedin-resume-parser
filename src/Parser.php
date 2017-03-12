@@ -1026,7 +1026,7 @@ class Parser
         // Find the position of the " person has recommended X" line
         $recommendationStartPosition = false;
         foreach ($lastSectionLines as $index => $lastSectionLine) {
-            if (preg_match('/ person has recommended .*/', $lastSectionLine)) {
+            if (preg_match('/ (?:person|people) (?:has|have) recommended .*/', $lastSectionLine)) {
                 $recommendationStartPosition = $index;
             }
         }
