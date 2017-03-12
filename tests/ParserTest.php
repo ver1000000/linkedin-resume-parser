@@ -3,7 +3,6 @@
 namespace LinkedInResumeParser\Tests;
 
 use LinkedInResumeParser\Exception\FileNotFoundException;
-use LinkedInResumeParser\Exception\LinkedInResumeParserException;
 use LinkedInResumeParser\ParsedResume;
 use LinkedInResumeParser\Parser;
 use PHPUnit\Framework\TestCase;
@@ -20,36 +19,42 @@ class ParserTest extends TestCase
      */
     protected $samplePath;
 
+    /**
+     * @var Parser
+     */
+    protected $parser;
+
+    /**
+     * Setup testing variables & environment
+     */
     public function setUp()
     {
-        $this->samplePath = realpath(__DIR__ . '/samples');
         parent::setUp();
+
+        $this->samplePath = realpath(__DIR__ . '/samples');
+
+        $this->parser = new Parser();
     }
 
+    /**
+     * Test that a file that does not exist throws the correct exception
+     */
     public function testFileNotFound()
     {
         $this->expectException(FileNotFoundException::class);
 
-        $parser = new Parser();
-        $parser->parse($this->samplePath . '/ResumeThatDoesNotExist.pdf');
+        $this->parser->parse($this->samplePath . '/ResumeThatDoesNotExist.pdf');
     }
 
-    public function testSingleSample()
-    {
-        $parser = new Parser();
-        $result = $parser->parse($this->samplePath . '/ElisseJean-Pierre.pdf');
-        $this->assertInstanceOf(ParsedResume::class, $result);
-    }
-
-    public function testAllSamples()
+    /**
+     * Test all samples and make sure no exceptions are thrown
+     */
+    public function testAllSamplesNoExceptions()
     {
         $samplePdfItems = glob($this->samplePath . '/*.pdf');
-        $parser = new Parser();
 
         foreach ($samplePdfItems as $key => $samplePdfItem) {
-            echo "Running ${samplePdfItem}" . PHP_EOL;
-            $result = $parser->parse($samplePdfItem);
-            print_r(json_encode($result, JSON_PRETTY_PRINT));
+            $result = $this->parser->parse($samplePdfItem);
             $this->assertInstanceOf(ParsedResume::class, $result);
         }
     }
