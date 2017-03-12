@@ -13,6 +13,7 @@ use LinkedInResumeParser\Section\EducationEntry;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Organization;
 use LinkedInResumeParser\Section\Project;
+use LinkedInResumeParser\Section\Recommendation;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\RoleInterface;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
@@ -31,18 +32,25 @@ class Parser
     /**
      * Constants that designate the various sections of the resume
      */
-    const SUMMARY_TITLE = 'Summary';
-    const EXPERIENCE_TITLE = 'Experience';
-    const SKILLS_AND_EXPERTISE_TITLE = 'Skills & Expertise';
-    const EDUCATION_TITLE = 'Education';
-    const CERTIFICATIONS_TITLE = 'Certifications';
-    const VOLUNTEER_EXPERIENCE_TITLE = 'Volunteer Experience';
-    const LANGUAGES_TITLE = 'Languages';
-    const INTERESTS_TITLE = 'Interests';
-    const ORGANIZATIONS_TITLE = 'Organizations';
-    const COURSES_TITLE = 'Courses';
-    const PROJECTS_TITLE = 'Projects';
-    const HONORS_AND_AWARDS_TITLE = 'Honors and Awards';
+    const SUMMARY = 'Summary';
+    const EXPERIENCE = 'Experience';
+    const SKILLS_EXPERTISE = 'Skills & Expertise';
+    const EDUCATION = 'Education';
+    const CERTIFICATIONS = 'Certifications';
+    const VOLUNTEER_EXPERIENCE = 'Volunteer Experience';
+    const LANGUAGES = 'Languages';
+    const INTERESTS = 'Interests';
+    const ORGANIZATIONS = 'Organizations';
+    const COURSES = 'Courses';
+    const PROJECTS = 'Projects';
+    const HONORS_AND_AWARDS = 'Honors and Awards';
+    const RECOMMENDATIONS = '???';
+
+    /**
+     * Constants that designate other parts of the resume that don't classify as a section.
+     */
+    const NAME = 'Name';
+    const EMAIL_ADDRESS = 'Email Address';
 
     /**
      * Section titles for each part of the resume
@@ -50,29 +58,31 @@ class Parser
      * @var string[]
      */
     protected $sectionTitles = [
-        self::SUMMARY_TITLE,
-        self::EXPERIENCE_TITLE,
-        self::SKILLS_AND_EXPERTISE_TITLE,
-        self::EDUCATION_TITLE,
-        self::CERTIFICATIONS_TITLE,
-        self::VOLUNTEER_EXPERIENCE_TITLE,
-        self::LANGUAGES_TITLE,
-        self::INTERESTS_TITLE,
-        self::ORGANIZATIONS_TITLE,
-        self::COURSES_TITLE,
-        self::PROJECTS_TITLE,
-        self::HONORS_AND_AWARDS_TITLE,
+        self::SUMMARY,
+        self::EXPERIENCE,
+        self::SKILLS_EXPERTISE,
+        self::EDUCATION,
+        self::CERTIFICATIONS,
+        self::VOLUNTEER_EXPERIENCE,
+        self::LANGUAGES,
+        self::INTERESTS,
+        self::ORGANIZATIONS,
+        self::COURSES,
+        self::PROJECTS,
+        self::HONORS_AND_AWARDS,
+        self::RECOMMENDATIONS,
     ];
 
     /**
      * @param string $filePath
+     * @param array  $sections
      * @return ParsedResume
      * @throws FileNotFoundException
      * @throws FileNotReadableException
      * @throws ParseException
      * @throws \Exception
      */
-    public function parse(string $filePath): ParsedResume
+    public function parse(string $filePath, array $sections = []): ParsedResume
     {
         if ( ! file_exists($filePath)) {
             throw new FileNotFoundException("The file at $filePath does not exist.");
@@ -90,69 +100,104 @@ class Parser
         $parsedResumeInstance = new ParsedResume();
 
         $name = $textLines[0];
-        $parsedResumeInstance->setName($name);
 
-        $textLines = $this->removeLastSection($textLines, $name);
-
-        if ($emailAddress = $this->getEmailAddress($textLines)) {
-            $parsedResumeInstance->setEmailAddress($emailAddress);
+        if ($this->shouldParseSection(self::NAME, $sections)) {
+            $parsedResumeInstance->setName($name);
         }
 
-        $skills = $this->getSkills($textLines);
-        $parsedResumeInstance->setSkills($skills);
+        list ($textLines, $lastSection) = $this->splitLastSection($textLines, $name);
 
-        if ($summary = $this->getSummary($textLines)) {
-            $parsedResumeInstance->setSummary($summary);
+        if ($this->shouldParseSection(self::EMAIL_ADDRESS, $sections)) {
+            if ($emailAddress = $this->getEmailAddress($textLines)) {
+                $parsedResumeInstance->setEmailAddress($emailAddress);
+            }
         }
 
-        $roles = $this->getRoles($textLines);
-
-        // Check if their latest role has ended, i.e. it is not their current role
-        $latestRole = reset($roles);
-        if ($latestRole->getEnd() === null) {
-            // Remove it from our list since we're setting previous roles
-            array_shift($roles);
-
-            // Set it as the current role
-            $parsedResumeInstance->setCurrentRole($latestRole);
+        if ($this->shouldParseSection(self::SKILLS_EXPERTISE, $sections)) {
+            $skills = $this->getSkills($textLines);
+            $parsedResumeInstance->setSkills($skills);
         }
 
-        $parsedResumeInstance->setPreviousRoles($roles);
-
-        $volunteerExperienceEntries = $this->getVolunteerExperienceEntries($textLines);
-        $parsedResumeInstance->setVolunteerExperienceEntries($volunteerExperienceEntries);
-
-        $educationEntries = $this->getEducationEntries($textLines);
-        $parsedResumeInstance->setEducationEntries($educationEntries);
-
-        if ($certifications = $this->getCertifications($textLines)) {
-            $parsedResumeInstance->setCertifications($certifications);
+        if ($this->shouldParseSection(self::SUMMARY, $sections)) {
+            if ($summary = $this->getSummary($textLines)) {
+                $parsedResumeInstance->setSummary($summary);
+            }
         }
 
-        if ($languages = $this->getLanguages($textLines)) {
-            $parsedResumeInstance->setLanguages($languages);
+        if ($this->shouldParseSection(self::EXPERIENCE, $sections)) {
+            $roles = $this->getRoles($textLines);
+
+            // Check if their latest role has ended, i.e. it is not their current role
+            $latestRole = reset($roles);
+            if ($latestRole->getEnd() === null) {
+                // Remove it from our list since we're setting previous roles
+                array_shift($roles);
+
+                // Set it as the current role
+                $parsedResumeInstance->setCurrentRole($latestRole);
+            }
+
+            $parsedResumeInstance->setPreviousRoles($roles);
         }
 
-        $interests = $this->getInterests($textLines);
-        $parsedResumeInstance->setInterests($interests);
+        if ($this->shouldParseSection(self::VOLUNTEER_EXPERIENCE, $sections)) {
+            $volunteerExperienceEntries = $this->getVolunteerExperienceEntries($textLines);
+            $parsedResumeInstance->setVolunteerExperienceEntries($volunteerExperienceEntries);
+        }
 
-        $honorsAndAwards = $this->getHonorsAndAwards($textLines);
-        $parsedResumeInstance->setHonorsAndAwards($honorsAndAwards);
+        if ($this->shouldParseSection(self::EDUCATION, $sections)) {
+            $educationEntries = $this->getEducationEntries($textLines);
+            $parsedResumeInstance->setEducationEntries($educationEntries);
+        }
 
-        $organizations = $this->getOrganizations($textLines);
-        $parsedResumeInstance->setOrganizations($organizations);
+        if ($this->shouldParseSection(self::CERTIFICATIONS, $sections)) {
+            if ($certifications = $this->getCertifications($textLines)) {
+                $parsedResumeInstance->setCertifications($certifications);
+            }
+        }
 
-        $courses = $this->getCourses($textLines);
-        $parsedResumeInstance->setCourses($courses);
+        if ($this->shouldParseSection(self::LANGUAGES, $sections)) {
+            if ($languages = $this->getLanguages($textLines)) {
+                $parsedResumeInstance->setLanguages($languages);
+            }
+        }
 
-        $projects = $this->getProjects($textLines);
-        $parsedResumeInstance->setProjects($projects);
+        if ($this->shouldParseSection(self::INTERESTS, $sections)) {
+            $interests = $this->getInterests($textLines);
+            $parsedResumeInstance->setInterests($interests);
+        }
+
+        if ($this->shouldParseSection(self::HONORS_AND_AWARDS, $sections)) {
+            $honorsAndAwards = $this->getHonorsAndAwards($textLines);
+            $parsedResumeInstance->setHonorsAndAwards($honorsAndAwards);
+        }
+
+        if ($this->shouldParseSection(self::ORGANIZATIONS, $sections)) {
+            $organizations = $this->getOrganizations($textLines);
+            $parsedResumeInstance->setOrganizations($organizations);
+        }
+
+        if ($this->shouldParseSection(self::COURSES, $sections)) {
+            $courses = $this->getCourses($textLines);
+            $parsedResumeInstance->setCourses($courses);
+        }
+
+        if ($this->shouldParseSection(self::PROJECTS, $sections)) {
+            $projects = $this->getProjects($textLines);
+            $parsedResumeInstance->setProjects($projects);
+        }
+
+        if ($this->shouldParseSection(self::RECOMMENDATIONS, $sections)) {
+            $recommendations = $this->getRecommendations($lastSection);
+            $parsedResumeInstance->setRecommendations($recommendations);
+        }
 
         return $parsedResumeInstance;
     }
 
     /**
      * @param string $filePath
+     *
      * @return Document
      */
     protected function getParsedPdfInstance(string $filePath): Document
@@ -163,6 +208,7 @@ class Parser
 
     /**
      * @param Document $parsedPdfInstance
+     *
      * @return TextLine[]
      * @throws \Exception
      */
@@ -213,6 +259,7 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return string[]
      */
     protected function filterText(array $textLines): array
@@ -232,11 +279,25 @@ class Parser
     }
 
     /**
+     * Check if the given section should be parsed.
+     * If no sections specified it is assumed that all sections are to be parsed.
+     *
+     * @param string $section
+     * @param array  $sectionsToParse
+     * @return bool
+     */
+    protected function shouldParseSection($section, array $sectionsToParse)
+    {
+        return count($sectionsToParse) === 0 || in_array($section, $sectionsToParse);
+    }
+
+    /**
      * Check if the given index is indicative of being a Page designation
      * e.g. current index will be "Page" and then the immediate index will be the number
      *
-     * @param int $index
+     * @param int   $index
      * @param array $textLines
+     *
      * @return bool
      */
     protected function isPageDesignation(int $index, array $textLines): bool
@@ -245,19 +306,24 @@ class Parser
     }
 
     /**
-     * @param array $textLines
+     * @param array    $textLines
      * @param TextLine $name
-     * @return TextLine[]
+     * @return array
      */
-    protected function removeLastSection(array $textLines, TextLine $name): array
+    protected function splitLastSection(array $textLines, TextLine $name): array
     {
         $lastNameOccurrence = array_search($name, array_reverse($textLines));
-        array_splice($textLines, count($textLines) - $lastNameOccurrence - 1);
-        return $textLines;
+        $lastSection = array_splice($textLines, count($textLines) - $lastNameOccurrence - 1);
+
+        return [
+            $textLines,
+            $lastSection,
+        ];
     }
 
     /**
      * @param TextLine[] $textLines
+     *
      * @return string | null
      */
     protected function getEmailAddress(array $textLines)
@@ -277,15 +343,17 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      */
     protected function getSkills(array $textLines): array
     {
-        return $this->getTextValues($this->findSectionLines(self::SKILLS_AND_EXPERTISE_TITLE, $textLines));
+        return $this->getTextValues($this->findSectionLines(self::SKILLS_EXPERTISE, $textLines));
     }
 
     /**
      * @param array $textLines
+     *
      * @return string[]
      */
     protected function getTextValues(array $textLines)
@@ -297,7 +365,8 @@ class Parser
 
     /**
      * @param string $sectionTitle
-     * @param array $textLines
+     * @param array  $textLines
+     *
      * @return TextLine[]
      */
     protected function findSectionLines(string $sectionTitle, array $textLines): array
@@ -314,8 +383,9 @@ class Parser
     }
 
     /**
-     * @param int $startIndex
+     * @param int   $startIndex
      * @param array $textLines
+     *
      * @return int
      */
     protected function findSectionIndexEnd(int $startIndex, array $textLines): int
@@ -331,11 +401,12 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return string | null
      */
     protected function getSummary(array $textLines)
     {
-        $startIndex = array_search(self::SUMMARY_TITLE, $textLines);
+        $startIndex = array_search(self::SUMMARY, $textLines);
 
         if ($startIndex === false) {
             return null;
@@ -350,18 +421,20 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return Role[]
      * @throws ParseException
      */
     protected function getRoles(array $textLines): array
     {
-        $roleLines = $this->findSectionLines(self::EXPERIENCE_TITLE, $textLines);
+        $roleLines = $this->findSectionLines(self::EXPERIENCE, $textLines);
         return $this->buildRoleTypes(Role::class, $roleLines);
     }
 
     /**
-     * @param string $classType
+     * @param string     $classType
      * @param TextLine[] $roleLines
+     *
      * @return array
      * @throws ParseException
      */
@@ -427,6 +500,7 @@ class Parser
 
     /**
      * @param string $roleLine
+     *
      * @return array
      * @throws ParseException
      */
@@ -444,6 +518,7 @@ class Parser
     /**
      * @param string $delimiter
      * @param string $string
+     *
      * @return array
      */
     protected function splitAndTrim(string $delimiter, string $string): array
@@ -457,6 +532,7 @@ class Parser
     /**
      * @param string $datesLine
      * @param string $delimiter
+     *
      * @return array
      * @throws ParseException
      */
@@ -485,6 +561,7 @@ class Parser
 
     /**
      * @param string $string
+     *
      * @return DateTime
      * @throws ParseException
      */
@@ -501,23 +578,25 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getVolunteerExperienceEntries(array $textLines): array
     {
-        $volunteerExperienceLines = $this->findSectionLines(self::VOLUNTEER_EXPERIENCE_TITLE, $textLines);
+        $volunteerExperienceLines = $this->findSectionLines(self::VOLUNTEER_EXPERIENCE, $textLines);
         return $this->buildRoleTypes(VolunteerExperienceEntry::class, $volunteerExperienceLines);
     }
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getEducationEntries(array $textLines): array
     {
-        $educationLines = $this->findSectionLines(self::EDUCATION_TITLE, $textLines);
+        $educationLines = $this->findSectionLines(self::EDUCATION, $textLines);
 
         $educationEntries = [];
 
@@ -583,12 +662,13 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getCertifications(array $textLines): array
     {
-        $certificationLines = $this->findSectionLines(self::CERTIFICATIONS_TITLE, $textLines);
+        $certificationLines = $this->findSectionLines(self::CERTIFICATIONS, $textLines);
 
         $certifications = [];
 
@@ -606,7 +686,8 @@ class Parser
 
     /**
      * @param Certification $certification
-     * @param string $textLine
+     * @param string        $textLine
+     *
      * @return Certification
      * @throws ParseException
      */
@@ -642,11 +723,12 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      */
     protected function getLanguages(array $textLines): array
     {
-        $languageLines = $this->findSectionLines(self::LANGUAGES_TITLE, $textLines);
+        $languageLines = $this->findSectionLines(self::LANGUAGES, $textLines);
 
         $languages = [];
 
@@ -667,22 +749,24 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return string
      */
     protected function getInterests(array $textLines): string
     {
-        $interestLines = $this->findSectionLines(self::INTERESTS_TITLE, $textLines);
+        $interestLines = $this->findSectionLines(self::INTERESTS, $textLines);
         return implode('', $interestLines);
     }
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getOrganizations(array $textLines)
     {
-        $organizationLines = $this->findSectionLines(self::ORGANIZATIONS_TITLE, $textLines);
+        $organizationLines = $this->findSectionLines(self::ORGANIZATIONS, $textLines);
 
         $organizations = [];
 
@@ -726,12 +810,13 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getHonorsAndAwards(array $textLines)
     {
-        $honorsAndAwardsLines = $this->findSectionLines(self::HONORS_AND_AWARDS_TITLE, $textLines);
+        $honorsAndAwardsLines = $this->findSectionLines(self::HONORS_AND_AWARDS, $textLines);
 
         $honorsAndAwards = [];
 
@@ -772,12 +857,13 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getCourses(array $textLines)
     {
-        $courseLines = $this->findSectionLines(self::COURSES_TITLE, $textLines);
+        $courseLines = $this->findSectionLines(self::COURSES, $textLines);
 
         $courses = [];
 
@@ -818,12 +904,13 @@ class Parser
 
     /**
      * @param array $textLines
+     *
      * @return array
      * @throws ParseException
      */
     protected function getProjects(array $textLines)
     {
-        $projectLines = $this->findSectionLines(self::PROJECTS_TITLE, $textLines);
+        $projectLines = $this->findSectionLines(self::PROJECTS, $textLines);
 
         $previousLineType = null;
 
@@ -871,5 +958,84 @@ class Parser
         }
 
         return $projects;
+    }
+
+    /**
+     * @param array $lastSectionLines
+     * @return Recommendation[]
+     */
+    protected function getRecommendations(array $lastSectionLines)
+    {
+        $recommendationLines = $this->getRecommendationLines($lastSectionLines);
+
+        if ( ! count($recommendationLines)) {
+            return [];
+        }
+
+        $previousLineType = null;
+
+        $recommendations = [];
+
+        /** @var Recommendation $recommendation */
+
+        foreach ($recommendationLines as $recommendationLine) {
+
+            $recommendationLineText = $recommendationLine->getText();
+
+            if (preg_match('/^"(.*)\"$/', $recommendationLineText, $matches) || preg_match('/^"(.*)/', $recommendationLineText, $matches)) {
+                if (isset($recommendation)) {
+                    $recommendations[] = $recommendation;
+                }
+
+                $previousLineType = 'summary';
+
+                $recommendation = (new Recommendation())->appendSummary($matches[1]);
+            } elseif (preg_match('/\—\s(.*)/', $recommendationLineText, $matches)) {
+                $previousLineType = 'name';
+                $recommendation->setName($matches[1]);
+            } elseif ($recommendationLine->isItalics() && preg_match('/^\,\s(.*)/', $recommendationLineText, $matches)) {
+                $previousLineType = 'position';
+                $recommendation->setPosition($matches[1]);
+            } elseif (($previousLineType === 'position' || $previousLineType === 'name') && preg_match('/^\,\s(.*)/', $recommendationLineText, $matches)) {
+                $previousLineType = 'relation';
+                $recommendation->setRelation(ucfirst($matches[1]));
+            } elseif (preg_match('/(.*)"$/', $recommendationLineText, $matches)) {
+                $previousLineType = 'summary';
+                $recommendation->appendSummary($matches[1]);
+            } else {
+                $previousLineType = 'summary';
+                $recommendation->appendSummary($recommendationLineText);
+            }
+        }
+
+        if (isset($recommendation)) {
+            $recommendations[] = $recommendation;
+        }
+
+        return $recommendations;
+    }
+
+    /**
+     * @param TextLine[] $lastSectionLines
+     * @return TextLine[]
+     */
+    protected function getRecommendationLines($lastSectionLines)
+    {
+        // Remove last element because it's always "Contact X on LinkedIn"
+        array_pop($lastSectionLines);
+
+        // Find the position of the " person has recommended X" line
+        $recommendationStartPosition = false;
+        foreach ($lastSectionLines as $index => $lastSectionLine) {
+            if (preg_match('/ person has recommended .*/', $lastSectionLine)) {
+                $recommendationStartPosition = $index;
+            }
+        }
+
+        if ($recommendationStartPosition === false) {
+            return [];
+        }
+
+        return array_slice($lastSectionLines, $recommendationStartPosition + 1);
     }
 }

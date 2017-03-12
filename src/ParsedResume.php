@@ -12,6 +12,7 @@ use LinkedInResumeParser\Section\HonorAward;
 use LinkedInResumeParser\Section\Language;
 use LinkedInResumeParser\Section\Organization;
 use LinkedInResumeParser\Section\Project;
+use LinkedInResumeParser\Section\Recommendation;
 use LinkedInResumeParser\Section\Role;
 use LinkedInResumeParser\Section\VolunteerExperienceEntry;
 use LinkedInResumeParser\Traits\ArrayAccessible;
@@ -102,6 +103,11 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
      * @var Project[]
      */
     protected $projects = [];
+
+    /**
+     * @var Recommendation[]
+     */
+    protected $recommendations = [];
 
     /**
      * @return string
@@ -401,6 +407,24 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     {
         $this->projects = $projects;
         return $this;
+    }
+
+    /**
+     * @param Recommendation[] $recommendations
+     * @return ParsedResume
+     */
+    public function setRecommendations(array $recommendations): ParsedResume
+    {
+        $this->recommendations = $recommendations;
+        return $this;
+    }
+
+    /**
+     * @return Recommendation[]
+     */
+    public function getRecommendations(): array
+    {
+        return $this->recommendations;
     }
 
     /**
