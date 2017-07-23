@@ -7,7 +7,7 @@
     "currentRole": {
         "title": "Data Scientist",
         "organisation": "Flamingo",
-        "summary": "- Developing innovative and novel methodologies to utilize social data to analyse brands\u2019 positioning and hypothesising drivers of insights for the qualitative team- Developed solutions to analyse and model reviews of a product to observe and understand user behaviour- Worked with PepsiCo, Oxfam Netherlands, and Formula One to identify key content of interest for project",
+        "summary": "- Developing innovative and novel methodologies to utilize social data to analyse brands\u2019 positioning and\\r\\n hypothesising drivers of insights for the qualitative team\\r\\n- Developed solutions to analyse and model reviews of a product to observe and understand user behaviour\\r\\n- Worked with PepsiCo, Oxfam Netherlands, and Formula One to identify key content of interest for project",
         "start": {
             "date": "2016-11-01 00:00:00.000000",
             "timezone_type": 3,
@@ -19,7 +19,7 @@
         {
             "title": "Summer Analyst - Technology",
             "organisation": "Credit Suisse",
-            "summary": "- Developed the POC for Report Traceability Dashboard which illustrates the relationship between various market reports and their corresponding books and feeds- Interacted with various stakeholders to come up with the requirements and specifications of the dashboard- Reduced the extraction of data from 20 minutes to a couple of minutes by coming up with complex SQL queries ",
+            "summary": "- Developed the POC for Report Traceability Dashboard which illustrates the relationship between various\\r\\n market reports and their corresponding books and feeds\\r\\n- Interacted with various stakeholders to come up with the requirements and specifications of the dashboard\\r\\n- Reduced the extraction of data from 20 minutes to a couple of minutes by coming up with complex SQL\\r\\n queries ",
             "start": {
                 "date": "2016-05-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -34,7 +34,7 @@
         {
             "title": "Intern",
             "organisation": "Gemalto",
-            "summary": "- Developed a SharePoint solution to simplify the management of machines and used PerformancePoint Services to deploy a tool to help the management take various machine-related-decisions- Designed a dashboard to monitor the production performance of the personalization department using Macros, Java, HTML, CSS, and JavaScript- Improved overall efficiency by reducing man-hours from 3-4 hours to a couple of minutes on machine tracking ",
+            "summary": "- Developed a SharePoint solution to simplify the management of machines and used PerformancePoint\\r\\n Services to deploy a tool to help the management take various machine-related-decisions\\r\\n- Designed a dashboard to monitor the production performance of the personalization department using\\r\\n Macros, Java, HTML, CSS, and JavaScript\\r\\n- Improved overall efficiency by reducing man-hours from 3-4 hours to a couple of minutes on machine\\r\\n tracking ",
             "start": {
                 "date": "2015-07-01 00:00:00.000000",
                 "timezone_type": 3,

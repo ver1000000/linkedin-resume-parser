@@ -94,6 +94,11 @@ class Role implements JsonSerializable, RoleInterface, Arrayable, ArrayAccess
      */
     public function setSummary(string $summary): RoleInterface
     {
+        // fix line breaks
+        $summary = preg_replace("/\\\\r\\\\n$/", "", $summary);
+        // $summary = preg_replace("/\\\\r\\\\n-/", "___BREAK___", $summary);
+        // $summary = preg_replace("/\\\\r\\\\n/", "", $summary);
+        // $summary = preg_replace("/___BREAK___/", "\\r\\n-", $summary);
         $this->summary = $summary;
         return $this;
     }

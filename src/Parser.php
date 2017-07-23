@@ -247,6 +247,7 @@ class Parser
 
             $content = $page->get('Contents')->getContent();
             $sectionsText = $page->getSectionsText($content);
+            //$sectionsText = str_replace('\r\n?|\n', 'BREAK', $sectionsText); // replace wraps
 
             foreach ($sectionsText as $section) {
 
@@ -487,7 +488,7 @@ class Parser
                 $previousLineWasBold = true;
             } elseif ( ! preg_match('/^\(.*\)$/', $roleLineText)) { // This indicates the duration, so skip it.
                 $previousLineWasBold = false;
-                $roleGroups[$currentGroupIndex]['summary'] .= $roleLineText;
+                $roleGroups[$currentGroupIndex]['summary'] .= $roleLineText . '\r\n';
             }
         }
 
