@@ -1,5 +1,7 @@
 {
-    "name": "Aaron Lim",
+    "name": "Aaron",
+    "surname": "Lim",
+    "fullName": "Aaron Lim",
     "emailAddress": "lmzhdrn@gmail.com",
     "summary": "N\/A",
     "interests": "",
@@ -69,24 +71,6 @@
                 "timezone_type": 3,
                 "timezone": "UTC"
             }
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "Page ",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "2",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
         }
     ],
     "certifications": [],

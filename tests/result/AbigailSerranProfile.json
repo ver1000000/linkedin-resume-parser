@@ -1,5 +1,7 @@
 {
-    "name": "Abigail Serran",
+    "name": "Abigail",
+    "surname": "Serran",
+    "fullName": "Abigail Serran",
     "emailAddress": "abieserran@gmail.com",
     "summary": "N\/A",
     "interests": "",
@@ -38,24 +40,6 @@
             "level": null,
             "course_title": null,
             "institution": "FEU Institute of Technology",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "Page ",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "2",
             "grade": null,
             "activities_and_societies": null,
             "start": null,

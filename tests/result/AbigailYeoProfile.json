@@ -1,5 +1,7 @@
 {
-    "name": "Abigail Yeo",
+    "name": "Abigail",
+    "surname": "Yeo",
+    "fullName": "Abigail Yeo",
     "emailAddress": "yeo.abigail@hotmail.com",
     "summary": "N\/A",
     "interests": "",
@@ -34,7 +36,7 @@
         {
             "title": "Senior Account Executive",
             "organisation": "Wunderman",
-            "summary": "Comwerks is a Singapore-based full-service interactive agency specialising in digital marketing solutions and\\r\\n communication strategy. Comwerks Interactive is a member of the Wunderman network and part of the WPP\\r\\n group of companies.\\r\\n- Managed Overall DOTCOM channel content, artwork, production and deployment for Xbox APAC.\\r\\n- Actively Involved in creative proposals for cross-channel campaigns.\\r\\n- Managed several cross-channel campaign executions for Xbox APAC.\\r\\n- Organized and lead brainstorming sessions.\\r\\n- Lead in ad-hoc projects and collaboration with external agencies.\\r\\n- Graduated from Z Grad programme Singapore in 2013.\\r\\n- Participated in pitch for ideation and brainstorming sessions.\\r\\nPage \\r\\n2",
+            "summary": "Comwerks is a Singapore-based full-service interactive agency specialising in digital marketing solutions and\\r\\n communication strategy. Comwerks Interactive is a member of the Wunderman network and part of the WPP\\r\\n group of companies.\\r\\n- Managed Overall DOTCOM channel content, artwork, production and deployment for Xbox APAC.\\r\\n- Actively Involved in creative proposals for cross-channel campaigns.\\r\\n- Managed several cross-channel campaign executions for Xbox APAC.\\r\\n- Organized and lead brainstorming sessions.\\r\\n- Lead in ad-hoc projects and collaboration with external agencies.\\r\\n- Graduated from Z Grad programme Singapore in 2013.\\r\\n- Participated in pitch for ideation and brainstorming sessions.",
             "start": {
                 "date": "2012-01-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -144,24 +146,6 @@
             "level": null,
             "course_title": null,
             "institution": "Princess Elizabeth Primary School",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "Page ",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "3",
             "grade": null,
             "activities_and_societies": null,
             "start": null,

@@ -1,5 +1,7 @@
 {
-    "name": "Aakash Gupta",
+    "name": "Aakash",
+    "surname": "Gupta",
+    "fullName": "Aakash Gupta",
     "emailAddress": "aakashgupta.0205@gmail.com",
     "summary": "A competent student, pursuing Computer Science, specializing in Information Systems and Data Science.",
     "interests": "",
@@ -53,7 +55,7 @@
             "course_title": "Computer Science",
             "institution": "Nanyang Technological University",
             "grade": null,
-            "activities_and_societies": null,
+            "activities_and_societies": "Red Cross Youth NTU Chapter, NTU Students' Union, Earthlink NTU, Rotaract Club of NTU, NTU Sikh Cultural and Literary Society, NTU Computer Society",
             "start": {
                 "date": "2013-01-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -64,24 +66,6 @@
                 "timezone_type": 3,
                 "timezone": "UTC"
             }
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "Page ",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "2",
-            "grade": null,
-            "activities_and_societies": "Red Cross Youth NTU Chapter, NTU Students' Union, Earthlink NTU, Rotaract Club of NTU, NTU Sikh Cultural and Literary Society, NTU Computer Society",
-            "start": null,
-            "end": null
         },
         {
             "level": "High School",

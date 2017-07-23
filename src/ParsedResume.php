@@ -34,6 +34,7 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
      * @var string
      */
     protected $name;
+    protected $surname;
 
     /**
      * @var string
@@ -129,6 +130,14 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
+     * @return string
+     */
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    /**
      * @param string $name
      * @return ParsedResume
      */
@@ -136,6 +145,24 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     {
         $this->name = $name;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return ParsedResume
+     */
+    public function setSurname(string $surname): ParsedResume
+    {
+        $this->surname = $surname;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return $this->name . ' ' . $this->surname;
     }
 
     /**
@@ -491,6 +518,8 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     {
         return [
             'name'                       => $this->name,
+            'surname'                    => $this->surname,
+            'fullName'                   => $this->getFullName(),
             'emailAddress'               => $this->emailAddress,
             'summary'                    => $this->summary,
             'interests'                  => $this->interests,

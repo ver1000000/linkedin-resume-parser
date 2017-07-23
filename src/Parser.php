@@ -103,13 +103,15 @@ class Parser
 
         $parsedResumeInstance = new ParsedResume();
 
-        $name = $textLines[2];
+        $fullName = $textLines[0];
 
         if ($this->shouldParseSection(self::NAME, $sections)) {
-            $parsedResumeInstance->setName($name);
+            $nameArray = $this->splitFullName($fullName, $this->getNameFromContact($textLines[count($textLines) - 1]));
+            $parsedResumeInstance->setName($nameArray[0]);
+            $parsedResumeInstance->setSurname($nameArray[1]);
         }
 
-        list ($textLines, $lastSection) = $this->splitLastSection($textLines, $name);
+        list ($textLines, $lastSection) = $this->splitLastSection($textLines, $fullName);
 
         if ($this->shouldParseSection(self::EMAIL_ADDRESS, $sections)) {
             if ($emailAddress = $this->getEmailAddress($textLines)) {
@@ -324,7 +326,7 @@ class Parser
      */
     protected function isPageDesignation(int $index, array $textLines): bool
     {
-        return (string)$textLines[$index] === 'Page' && is_numeric((string)$textLines[$index + 1]);
+        return (string)$textLines[$index] === 'Page ' && is_numeric((string)$textLines[$index + 1]);
     }
 
     /**
@@ -341,6 +343,25 @@ class Parser
             $textLines,
             $lastSection,
         ];
+    }
+
+    protected function getNameFromContact(string $contactLine) {
+        $matches = [];
+        preg_match('/Contact (.*) on LinkedIn/', $contactLine, $matches);
+        return $matches[1];
+    }
+
+    protected function splitFullName(string $fullName, string $name) {
+        $surname = '';
+        $splitted = explode($name, $fullName)[1];
+
+        if (count($splitted) > 0) {
+            $surname = explode($name, $fullName)[1];
+        } else {
+            $surname = explode(' ', $fullName)[1];
+        }
+
+        return [$name, trim($surname)];
     }
 
     /**

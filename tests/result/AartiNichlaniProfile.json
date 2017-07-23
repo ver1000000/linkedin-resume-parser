@@ -1,5 +1,7 @@
 {
-    "name": "Aarti Nichlani",
+    "name": "Aarti",
+    "surname": "Nichlani",
+    "fullName": "Aarti Nichlani",
     "emailAddress": "aarti.nichlani@gmail.com",
     "summary": "Passionate, strategic and committed writer and creative director with loads of experience in traditional advertising, highlighted by intense and rewarding experiences in the activation space. En route to mastering the knack of creating effective digital content that\u2019s on brand, on brief and data backed. Prefers to manage small teams to create a supportive, family-like atmosphere where each one takes ownership and responsibility for their creative thinking. Respects deadlines, budgets and people.Strongly believes great advertising and a healthy work-life balance can go hand in hand. ",
     "interests": "",
@@ -49,7 +51,7 @@
         {
             "title": "Fashion entrepreneur",
             "organisation": "",
-            "summary": "Page \\r\\n2\\r\\nCo-owned an indie designer brand of clothing and accessories for women called \u2018Taxxi\u2019. \\r\\nRecognised by Elle magazine as one of India\u2019s most promising new designers.\\r\\nHandled design, production, marketing, sourcing and day-to-day store operations. \\r\\nTrained and managed staff at the production end as well as the retail end. ",
+            "summary": "Co-owned an indie designer brand of clothing and accessories for women called \u2018Taxxi\u2019. \\r\\nRecognised by Elle magazine as one of India\u2019s most promising new designers.\\r\\nHandled design, production, marketing, sourcing and day-to-day store operations. \\r\\nTrained and managed staff at the production end as well as the retail end. ",
             "start": {
                 "date": "2004-07-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -152,24 +154,6 @@
                 "timezone_type": 3,
                 "timezone": "UTC"
             }
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "Page ",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": null,
-            "course_title": null,
-            "institution": "3",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": null
         }
     ],
     "certifications": [],
