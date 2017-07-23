@@ -18,6 +18,7 @@ class ParserTest extends TestCase
      * @var string
      */
     protected $samplePath;
+    protected $resultPath;
 
     /**
      * @var Parser
@@ -32,6 +33,7 @@ class ParserTest extends TestCase
         parent::setUp();
 
         $this->samplePath = realpath(__DIR__ . '/samples');
+        $this->resultPath = realpath(__DIR__ . '/result');
 
         $this->parser = new Parser();
     }
@@ -56,6 +58,10 @@ class ParserTest extends TestCase
         foreach ($samplePdfItems as $key => $samplePdfItem) {
             $result = $this->parser->parse($samplePdfItem);
             $this->assertInstanceOf(ParsedResume::class, $result);
+            file_put_contents(
+                $this->resultPath. '/' . basename($samplePdfItem, '.pdf') . '.json',
+                json_encode($result, JSON_PRETTY_PRINT)
+            );
         }
     }
 }

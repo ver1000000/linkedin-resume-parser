@@ -1,0 +1,113 @@
+{
+    "name": "Aakash Gupta",
+    "emailAddress": "aakashgupta.0205@gmail.com",
+    "summary": "A competent student, pursuing Computer Science, specializing in Information Systems and Data Science.",
+    "interests": "",
+    "skills": [],
+    "currentRole": {
+        "title": "Data Scientist",
+        "organisation": "Flamingo",
+        "summary": "- Developing innovative and novel methodologies to utilize social data to analyse brands\u2019 positioning and hypothesising drivers of insights for the qualitative team- Developed solutions to analyse and model reviews of a product to observe and understand user behaviour- Worked with PepsiCo, Oxfam Netherlands, and Formula One to identify key content of interest for project",
+        "start": {
+            "date": "2016-11-01 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "UTC"
+        },
+        "end": null
+    },
+    "previousRoles": [
+        {
+            "title": "Summer Analyst - Technology",
+            "organisation": "Credit Suisse",
+            "summary": "- Developed the POC for Report Traceability Dashboard which illustrates the relationship between various market reports and their corresponding books and feeds- Interacted with various stakeholders to come up with the requirements and specifications of the dashboard- Reduced the extraction of data from 20 minutes to a couple of minutes by coming up with complex SQL queries ",
+            "start": {
+                "date": "2016-05-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2016-07-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Intern",
+            "organisation": "Gemalto",
+            "summary": "- Developed a SharePoint solution to simplify the management of machines and used PerformancePoint Services to deploy a tool to help the management take various machine-related-decisions- Designed a dashboard to monitor the production performance of the personalization department using Macros, Java, HTML, CSS, and JavaScript- Improved overall efficiency by reducing man-hours from 3-4 hours to a couple of minutes on machine tracking ",
+            "start": {
+                "date": "2015-07-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2015-12-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "educationEntries": [
+        {
+            "level": "Bachelor\u2019s Degree",
+            "course_title": "Computer Science",
+            "institution": "Nanyang Technological University",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2013-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2017-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "level": null,
+            "course_title": null,
+            "institution": "Page ",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": null,
+            "end": null
+        },
+        {
+            "level": null,
+            "course_title": null,
+            "institution": "2",
+            "grade": null,
+            "activities_and_societies": "Red Cross Youth NTU Chapter, NTU Students' Union, Earthlink NTU, Rotaract Club of NTU, NTU Sikh Cultural and Literary Society, NTU Computer Society",
+            "start": null,
+            "end": null
+        },
+        {
+            "level": "High School",
+            "course_title": "All India Senior School Certificate Examination",
+            "institution": "Texmaco DPS International School",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2011-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2013-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "certifications": [],
+    "volunteerExperienceEntries": [],
+    "languages": [],
+    "honorsAndAwards": [],
+    "organizations": [],
+    "courses": [],
+    "projects": [],
+    "recommendations": [],
+    "testScores": []
+}

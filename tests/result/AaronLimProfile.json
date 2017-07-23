@@ -1,0 +1,101 @@
+{
+    "name": "Aaron Lim",
+    "emailAddress": "lmzhdrn@gmail.com",
+    "summary": "N\/A",
+    "interests": "",
+    "skills": [],
+    "currentRole": {
+        "title": "Integrated Senior Planner",
+        "organisation": "Havas Media Group",
+        "summary": null,
+        "start": {
+            "date": "2015-01-01 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "UTC"
+        },
+        "end": null
+    },
+    "previousRoles": [
+        {
+            "title": "Media Planner",
+            "organisation": "ZenithOptimedia Group I The ROI Agency",
+            "summary": "Assists clients in proposing and conceptualizing ideas for both offline and online media investmentManages and monitor digital media progress for clientsLiaised and handled communications from external agencies to with clientsEstablish and ensures communications with clients to facilitate precise media planningPrepares progress reports for clients on campaign level Provide clients with administrative assistanceOther ad-hoc duties and secretarial work",
+            "start": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2015-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Consultant",
+            "organisation": "Brand-Cellar Pte Ltd",
+            "summary": "Managed and monitored marketing progress for clientsAssisted clients in proposing and conceptualizing ideas for internal and external eventsIn charge of planning and coordinating media launches and marketing events Provided clients with administrative assistanceLiaised and handled communications from external agencies to with clientsPrepared monthly updates for media exposure to clientsOther ad-hoc duties and secretarial work",
+            "start": {
+                "date": "2009-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "educationEntries": [
+        {
+            "level": null,
+            "course_title": null,
+            "institution": "Murdoch University",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": null,
+            "end": null
+        },
+        {
+            "level": " Technology",
+            "course_title": null,
+            "institution": "Bachelor in Mass Communications, Double Majors: Public Relations and Communication Policy &",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": null,
+            "end": {
+                "date": "2008-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "level": null,
+            "course_title": null,
+            "institution": "Page ",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": null,
+            "end": null
+        },
+        {
+            "level": null,
+            "course_title": null,
+            "institution": "2",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": null,
+            "end": null
+        }
+    ],
+    "certifications": [],
+    "volunteerExperienceEntries": [],
+    "languages": [],
+    "honorsAndAwards": [],
+    "organizations": [],
+    "courses": [],
+    "projects": [],
+    "recommendations": [],
+    "testScores": []
+}

@@ -101,7 +101,7 @@ class Parser
 
         $parsedResumeInstance = new ParsedResume();
 
-        $name = $textLines[0];
+        $name = $textLines[2];
 
         if ($this->shouldParseSection(self::NAME, $sections)) {
             $parsedResumeInstance->setName($name);
@@ -169,10 +169,10 @@ class Parser
             $parsedResumeInstance->setInterests($interests);
         }
 
-        if ($this->shouldParseSection(self::HONORS_AND_AWARDS, $sections)) {
-            $honorsAndAwards = $this->getHonorsAndAwards($textLines);
-            $parsedResumeInstance->setHonorsAndAwards($honorsAndAwards);
-        }
+        // if ($this->shouldParseSection(self::HONORS_AND_AWARDS, $sections)) {
+        //     $honorsAndAwards = $this->getHonorsAndAwards($textLines);
+        //     $parsedResumeInstance->setHonorsAndAwards($honorsAndAwards);
+        // }
 
         if ($this->shouldParseSection(self::ORGANIZATIONS, $sections)) {
             $organizations = $this->getOrganizations($textLines);
@@ -513,9 +513,12 @@ class Parser
      */
     protected function parseRoleParts(string $roleLine): array
     {
-        $roleParts = $this->splitAndTrim('  at  ', $roleLine);
+        $roleParts = $this->splitAndTrim(' at ', $roleLine);
 
         if (count($roleParts) === 2) {
+            return $roleParts;
+        } else if (count($roleParts) === 1) {
+            array_push($roleParts, '');
             return $roleParts;
         } else {
             throw new ParseException("There was an error parsing the job title and organisation from the role line '${roleLine}'");
