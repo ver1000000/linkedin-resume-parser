@@ -116,6 +116,11 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     protected $testScores = [];
 
     /**
+     * @var URL
+     */
+    protected $url;
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -232,6 +237,16 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     public function addSkill(string $skill): ParsedResume
     {
         $this->skills[] = $skill;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return ParsedResume
+     */
+    public function setUrl(string $url): ParsedResume
+    {
+        $this->url = $url;
         return $this;
     }
 
@@ -452,6 +467,14 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
     }
 
     /**
+     * @return URL
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize(): array
@@ -484,6 +507,7 @@ class ParsedResume implements JsonSerializable, Arrayable, ArrayAccess
             'projects'                   => $this->itemsToArray($this->projects),
             'recommendations'            => $this->itemsToArray($this->recommendations),
             'testScores'                 => $this->itemsToArray($this->testScores),
+            'url'                        => $this->url,
         ];
     }
 

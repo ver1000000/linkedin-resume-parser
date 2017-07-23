@@ -46,6 +46,7 @@ class Parser
     const PROJECTS = 'Projects';
     const HONORS_AND_AWARDS = 'Honors and Awards';
     const TEST_SCORES = 'Test Scores';
+    const URL = 'URL';
 
     /**
      * Constants that designate other parts of the resume that don't classify as a section.
@@ -73,6 +74,7 @@ class Parser
         self::PROJECTS,
         self::HONORS_AND_AWARDS,
         self::TEST_SCORES,
+        self::URL
     ];
 
     /**
@@ -197,6 +199,18 @@ class Parser
         if ($this->shouldParseSection(self::RECOMMENDATIONS, $sections)) {
             $recommendations = $this->getRecommendations($lastSection);
             $parsedResumeInstance->setRecommendations($recommendations);
+        }
+
+        if ($this->shouldParseSection(self::URL, $sections)) {
+            $urls = [];
+            $pdfContent = file_get_contents($filePath, true);
+            // preg_match_all('/URI\(([^,]*?)\)\/S\/URI/', $pdfContent, $urls);
+            preg_match_all('/URI \(([^,]*?)\)/', $pdfContent, $urls);
+
+            if (count($urls) > 0) {
+                $url = array_reverse($urls)[0][0];
+                $parsedResumeInstance->setUrl($url);
+            }
         }
 
         return $parsedResumeInstance;
