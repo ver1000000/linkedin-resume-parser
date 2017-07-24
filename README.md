@@ -12,7 +12,7 @@ certifications etc.
 $resumeParser = new \LinkedInResumeParser\Parser();
 $parsedResume = $resumeParser->parse('/path/to/resume.pdf');
 
-echo $parsedResume->getName();
+echo $parsedResume->getFullName();
 // Ross Kinsman
 
 echo $parsedResume->getCurrentRole()->getOrganisation();
@@ -37,8 +37,8 @@ foreach ($parsedResume->getEducationEntries() as $educationEntry) {
 ## Test Data
 
 More test data would always be appreciated, so if you wish to include your resume I'll gladly accept PRs and
-relevant tests. 
+relevant tests.
 
-The existing test data for this project is a collection of LinkedIn resumes I found on GitHub. If your resume is 
+The existing test data for this project is a collection of LinkedIn resumes I found on GitHub. If your resume is
 here, and you wish to have it removed, I'm easily reachable on Twitter at [@persata](https://twitter.com/persata),
 or open an issue on this repository.
