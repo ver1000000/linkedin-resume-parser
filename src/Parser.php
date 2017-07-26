@@ -554,7 +554,7 @@ class Parser
         if (count($roleParts) === 2) {
             return $roleParts;
         } else if (count($roleParts) === 1) {
-            array_push($roleParts, '');
+            array_push($roleParts, $roleParts[0]);
             return $roleParts;
         } else {
             throw new ParseException("There was an error parsing the job title and organisation from the role line '${roleLine}'");
