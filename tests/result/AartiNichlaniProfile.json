@@ -9,7 +9,7 @@
     "currentRole": {
         "title": "Creative Director",
         "organisation": "J. Walter Thompson Worldwide",
-        "summary": "Creative caregiver for Friso - Friesland Campina's brand of infant milk formula. \\r\\nWork closely with the ECD, the global business director and brand planners to formulate campaigns that\\r\\n resonate across markets - China, Hong Kong, Vietnam, Indonesia, the Middle East and Europe. ",
+        "summary": "Creative caregiver for Friso - Friesland Campina's brand of infant milk formula. \\r\\nWork closely with the ECD, the global business director and brand planners to formulate campaigns that resonate across markets - China, Hong Kong, Vietnam, Indonesia, the Middle East and Europe. ",
         "start": {
             "date": "2014-12-01 00:00:00.000000",
             "timezone_type": 3,
@@ -36,7 +36,7 @@
         {
             "title": "Creative Director",
             "organisation": "Geometry Global - Ogilvy's activation arm",
-            "summary": "Held creative ownership for brands like Cadbury, the Horlicks range, Bru World Caf\u00e9 and Lifebuoy, in the\\r\\n activation space.\\r\\nNoteworthy campaigns include Lifebuoy\u2019s Roti Reminder (2013), Lifebuoy\u2019s Jump Pump (2014) and\\r\\n Vodafone\u2019s Musical Earmuffs (2013).\\r\\nReceived recognition at multiple global, regional and local forums including Cannes Lions, Clio, D&AD,\\r\\n AMES, PMAA, Effies, WARC Strategy Awards, Emvies.",
+            "summary": "Held creative ownership for brands like Cadbury, the Horlicks range, Bru World Caf\u00e9 and Lifebuoy, in the activation space.\\r\\nNoteworthy campaigns include Lifebuoy\u2019s Roti Reminder (2013), Lifebuoy\u2019s Jump Pump (2014) and Vodafone\u2019s Musical Earmuffs (2013).\\r\\nReceived recognition at multiple global, regional and local forums including Cannes Lions, Clio, D&AD, AMES, PMAA, Effies, WARC Strategy Awards, Emvies.",
             "start": {
                 "date": "2010-05-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -66,7 +66,7 @@
         {
             "title": "Consultant Copywriter",
             "organisation": "Consultant Copywriter",
-            "summary": "Worked part time to develop in-house advertising campaigns for the Times Of India and their different\\r\\n publications while running my own business.",
+            "summary": "Worked part time to develop in-house advertising campaigns for the Times Of India and their different publications while running my own business.",
             "start": {
                 "date": "2005-01-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -81,7 +81,7 @@
         {
             "title": "Senior Copywriter",
             "organisation": "Contract Advertising",
-            "summary": "Created award winning advertising campaigns for Shoppers\u2019 Stop (a chain of lifestyle stores) and Cadbury\\r\\n Temptations (premium chocolates). ",
+            "summary": "Created award winning advertising campaigns for Shoppers\u2019 Stop (a chain of lifestyle stores) and Cadbury Temptations (premium chocolates). ",
             "start": {
                 "date": "2001-01-01 00:00:00.000000",
                 "timezone_type": 3,
@@ -131,9 +131,13 @@
             "institution": "Sydenham College",
             "grade": null,
             "activities_and_societies": null,
-            "start": null,
-            "end": {
+            "start": {
                 "date": "1993-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "1996-01-01 00:00:00.000000",
                 "timezone_type": 3,
                 "timezone": "UTC"
             }

@@ -249,7 +249,6 @@ class Parser
 
             $content = $page->get('Contents')->getContent();
             $sectionsText = $page->getSectionsText($content);
-            //$sectionsText = str_replace('\r\n?|\n', 'BREAK', $sectionsText); // replace wraps
 
             foreach ($sectionsText as $section) {
 
@@ -422,7 +421,9 @@ class Parser
 
         $endIndex = $this->findSectionIndexEnd($startIndex, $textLines);
 
-        return array_slice($textLines, $startIndex + 1, $endIndex - $startIndex - 1);
+        $sectionLines = array_slice($textLines, $startIndex + 1, $endIndex - $startIndex - 1);
+
+        return $this->mergeLinesByParagraph($sectionLines);
     }
 
     /**
@@ -440,6 +441,39 @@ class Parser
         }
 
         return count($textLines);
+    }
+
+    /**
+     * @param array $textLines
+     *
+     * @return array
+     */
+    protected function mergeLinesByParagraph($textLines): array {
+        $resultLines = [];
+
+        if (count($textLines)) {
+
+            $resultLines[] = $textLines[0]; // set first line
+
+            // if new line starts from space we concatenate new line with the previous
+            for ($i = 1; $i < count($textLines); $i++) {
+                $resultLinesCount = count($resultLines);
+
+                if ($resultLinesCount && strlen($textLines[$i]) && str_split($textLines[$i])[0] == ' ') {
+                    $resultLines[$resultLinesCount - 1]->addText($textLines[$i]);
+                } else {
+                    $resultLines[] = $textLines[$i];
+                }
+            }
+
+            // Debug
+            // foreach ($resultLines as $line) {
+            //      echo PHP_EOL . $line;
+            // }
+        }
+
+
+        return $resultLines;
     }
 
     /**
@@ -662,6 +696,11 @@ class Parser
                 $educationEntry
                     ->setLevel($matches[1])
                     ->setCourseTitle($matches[2])
+                    ->setEnd($this->parseStringToDateTime($matches[3]));
+            } elseif (preg_match('/(.*?),\s(\d{4})\s-\s(\d{4})/', $educationLine, $matches)) { // "High School, 2002 - 2004"
+                $educationEntry
+                    ->setLevel($matches[1])
+                    ->setStart($this->parseStringToDateTime($matches[2]))
                     ->setEnd($this->parseStringToDateTime($matches[3]));
             } elseif (preg_match('/(.*?),\s(\d{4})/', $educationLine, $matches)) { // "High School, 2009"
                 $educationEntry

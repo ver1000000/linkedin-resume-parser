@@ -51,23 +51,18 @@
     ],
     "educationEntries": [
         {
-            "level": null,
-            "course_title": null,
+            "level": "Bachelor in Mass Communications",
+            "course_title": "Double Majors: Public Relations and Communication Policy & Technology",
             "institution": "Murdoch University",
             "grade": null,
             "activities_and_societies": null,
-            "start": null,
-            "end": null
-        },
-        {
-            "level": " Technology",
-            "course_title": null,
-            "institution": "Bachelor in Mass Communications, Double Majors: Public Relations and Communication Policy &",
-            "grade": null,
-            "activities_and_societies": null,
-            "start": null,
-            "end": {
+            "start": {
                 "date": "2008-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2009-01-01 00:00:00.000000",
                 "timezone_type": 3,
                 "timezone": "UTC"
             }

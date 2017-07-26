@@ -82,6 +82,14 @@ class TextLine
     }
 
     /**
+     * @return string
+     */
+    public function addText(string $text)
+    {
+        $this->text .= $text;
+    }
+
+    /**
      * @return bool
      */
     public function isBold(): bool

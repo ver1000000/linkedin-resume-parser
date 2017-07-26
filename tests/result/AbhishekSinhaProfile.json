@@ -133,9 +133,13 @@
             "institution": "ihm, lucknow",
             "grade": null,
             "activities_and_societies": null,
-            "start": null,
-            "end": {
+            "start": {
                 "date": "2005-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2008-01-01 00:00:00.000000",
                 "timezone_type": 3,
                 "timezone": "UTC"
             }
