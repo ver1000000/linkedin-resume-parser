@@ -1,0 +1,132 @@
+{
+    "name": "Adam Alim",
+    "surname": "Nait",
+    "fullName": "Adam Alim Nait",
+    "emailAddress": "alimadam.nait@gmail.com",
+    "summary": "I have never been the obvious choice.",
+    "interests": "",
+    "skills": [],
+    "currentRole": {
+        "title": "Regional Business Development Manager",
+        "organisation": "R\/GA",
+        "summary": "R\/GA is connected by design.\\r\\nFounded in 1977, the agency has been a pioneer at the intersection of technology, design and marketing with work spanning web, mobile, social, retail, product innovation, brand development and business consulting for the connected age. R\/GA has more than 2,000 employees globally with offices across the United States, Europe, South America, and Asia-Pacific and is part of The Interpublic Group of Companies (NYSE: IPG), one of the world\u2019s largest advertising and marketing services organizations.",
+        "start": {
+            "date": "2016-01-01 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "UTC"
+        },
+        "end": null
+    },
+    "previousRoles": [
+        {
+            "title": "Senior Strategist \/ New Biz Manager",
+            "organisation": "FF GROUP",
+            "summary": "Heading up the Business Development in Shanghai working closely with our Business Director. \\r\\nDeveloping creative ideas that create culture or just make us laugh. FFSH was awarded AdAge International Agency of the Year 2016.\\r\\nPortfolio ranges from Porsche, Diesel, Martell, Evian, Caudalie, Value Retail, The North Face, Lacoste, Anna Sui Fragrances and a stable of luxury and fashion brands.",
+            "start": {
+                "date": "2013-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2016-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Digital Strategist",
+            "organisation": "AKQA",
+            "summary": "As a planner at AKQA, I worked on spirit, luxury and lifestyle clients. In a world where \"digital\" no longer\\r\\nrefers only to technology or media channels, my job becomes even more exciting. It covers projects in communication, platforms, products & services - or all at the same time.\\r\\nThe craft of our creative team and the diversity of our talents helped without any doubt AKQA making 2013 year the agency's most successful year at Cannes to date.\\r\\nClients' portfolio includes, CHANEL (Fragrance & Beauty), Google, Martell, and Nike (Running & Women).",
+            "start": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2013-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "educationEntries": [
+        {
+            "level": "Master\u2019s Degree",
+            "course_title": "School of Management & Innovation",
+            "institution": "Fudan University",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2013-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2015-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "level": "Master\u2019s Degree",
+            "course_title": "School of Management & Innovation",
+            "institution": "Sciences Po",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2013-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2015-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "level": "Associate's degree",
+            "course_title": "Law",
+            "institution": "Fudan University",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2011-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "level": "Bachelor of Arts (B.A.)",
+            "course_title": "Philosophy, Politics and Economics",
+            "institution": "Sciences Po",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2008-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "certifications": [],
+    "volunteerExperienceEntries": [],
+    "languages": [],
+    "honorsAndAwards": [],
+    "organizations": [],
+    "courses": [],
+    "projects": [],
+    "recommendations": [],
+    "testScores": [],
+    "url": "http:\/\/www.linkedin.com\/in\/adamnait"
+}

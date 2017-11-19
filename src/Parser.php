@@ -375,7 +375,7 @@ class Parser
 
         foreach ($potentialEmailLines as $potentialEmailLine) {
             // Very basic email check
-            if (preg_match('/.*?\@.*?$/', $potentialEmailLine->getText())) {
+            if (filter_var($potentialEmailLine->getText(), FILTER_VALIDATE_EMAIL)) {
                 return $potentialEmailLine->getText();
             }
         }

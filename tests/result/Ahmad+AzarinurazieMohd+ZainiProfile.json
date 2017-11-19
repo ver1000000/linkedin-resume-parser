@@ -1,0 +1,184 @@
+{
+    "name": "Ahmad Azarinurazie",
+    "surname": "Mohd Zaini",
+    "fullName": "Ahmad Azarinurazie Mohd Zaini",
+    "emailAddress": "aienzaini@gmail.com",
+    "summary": "Seasonal technologist. Well experienced in IoT, smart system, web development, cloud solutions and managing technology team.Have in-depth experienced in eCommerce platform, fulfilment, strategy and execution.Specialties: Web project implementation, training, leading team, talent management, process engineering, crafting strategy for new startup\/enterprise and cultivating idea into viable solutions. Highly experienced in open source Web Development - Wordpress, Joomla, Magento; JS, CSS, HTML, PHP, ColdFusion, SEO and lots of web technologies.",
+    "interests": "",
+    "skills": [],
+    "currentRole": {
+        "title": "Technology Director",
+        "organisation": "Wealth Asia",
+        "summary": "Overseeing all technical aspects of the company. Grow the company through the use of technological resources with active and practical approach.",
+        "start": {
+            "date": "2017-02-01 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "UTC"
+        },
+        "end": null
+    },
+    "previousRoles": [
+        {
+            "title": "Managing Director",
+            "organisation": "Managing Director",
+            "summary": "Provide a quick turnaround for development of Wordpress, Joomla, Magento projects based on industry best practices for web applications.\\r\\nAlso experienced in dealing with mobile apps development (Android + iOS) and also digital marketing strategies (Adwords, FB, Google Display Network etc).\\r\\nContact me to discuss on your projects!",
+            "start": {
+                "date": "2007-08-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": null
+        },
+        {
+            "title": "Head of Technology Development",
+            "organisation": "GEMFIVE - GuoLine eMarketing Sdn Bhd",
+            "summary": "Responsible with overall end-to-end system architecture that includes platform strategy, system development, integration with 3rd party services, execution and maintenance of the new e-commerce system based on Magento Enterprise Edition, Android, iOS, Netsuite Financial Module, 3CX (customer service call system), Salesforce, Zendesk and many more.\\r\\nSuccessfully launched website within very short period and started maturity phase of system development whereby team shifted focus on scalability, extending features, optimizing performance, integrating CRM + custom business intelligent tools, automate huge amount of notifications based on dynamic logic\/threshold, deeper integration with 3PL (third-party logistic provider such as Skynet, GDEX, PosLaju, SureReach), initiate API services for partners, create dynamic logic for payment gateways (MIGS, CyberSource, Maybank, HongLeong, MolPay) and many more.\\r\\nSetup and deployed intelligent infastructure based on AWS auto-scaling, RDS, CloudWatch, SNS, CloudFront, Nagios and Slack (for incident management).\\r\\nAlso managed office IT infrastructure (network, servers and assets) and directly involved with Technology resources hiring.",
+            "start": {
+                "date": "2015-03-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2017-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Head of Enterprise CRM, UI\/UX & PHP Development",
+            "organisation": "Xchanging",
+            "summary": "Hold multiple roles in various projects such as:\\r\\n1. Solution Architect for Customer Information System. A CRM project with the biggest energy provider in Singapore that handles more than 10,000 corporate active customers. Leads the design of solution, POC demonstration and translates business process to efficient + simplified system. Also responsible with development planning, data conversion process and infrastructure setup. Scope includes system integration of marketing, sales, procurement, customer care and account management department.\\r\\n2. Lead Developer for ticketing system. Responsible with development of e-commerce platform that deeply integrated with web services on cloud infra. Successfully deployed and expanded scope of system that includes new stations and infrastructure setup.\\r\\n3. Head of Enterprise Content Management System. Initiated a new service offering for the company to build websites based on open source platform that has been upgraded to enterprise level in terms of usability, auditing and security.\\r\\n4. Manager for UI\/UX and PHP Development team. Provides mentoring + training to team members, consultation on new project development in terms of industry best practices and best way on implementing features in mobile and web application. Projects include building Document Management System, Procurement System, custom CRM and billing system for telecommunication industry.",
+            "start": {
+                "date": "2012-09-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2015-03-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Web Specialist",
+            "organisation": "Silverstreet bv",
+            "summary": "Responsible with all web related stuff which includes:\\r\\n- direction of new UI for all websites and applications.\\r\\n- writing applications that connect with the internally built APIs.\\r\\n- create awesome user experience interface and interaction.\\r\\nI am also working closely with R&D team from Netherland to develop their next generation platform for SMS business.",
+            "start": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2012-10-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Web Business Development Manager",
+            "organisation": "Web Business Development Manager",
+            "summary": "Oversee day to day operation of web development team. Meet clients from all sort of industries to explore business opportunities. Prepare documentation and proposal.\\r\\nResponsible with the direction of the web business for the company. Work closely with CEO and head of other deparments in brainstorming ideas and approaching clients.\\r\\nLead the web development team in terms of planning, executing technical plan and managing the client queries.\\r\\nStarted the initiative of offering new services - SEO\/PPC, Google Apps and IT Consultation.",
+            "start": {
+                "date": "2011-02-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2012-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Regional Manager (Asia Pacific)",
+            "organisation": "LoveClients INC",
+            "summary": "Involved with development + optimization + account management of more than 50 websites for clients from all over the world.\\r\\nDevelopment - In charged with development and leading the team to build websites using many frameworks such as Wordpress, Joomla and Magento. Hands on with writing beautiful and efficient HTML+CSS\\r\\n+Javascript codes.\\r\\nOptimization - Managed SEO\/PPC campaigns for clients from many backgrounds that includes keywords researching, suggesting, applying them to websites, create landing pages and many more techniques.\\r\\nAccount Management - Managed client expectations and project execution through Live Chat help and project management tool.\\r\\nI was also involved with managing staff and office matters that includes liaising with EPF, SOCSO and Tax payment.",
+            "start": {
+                "date": "2009-10-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2011-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Web Developer",
+            "organisation": "Pixl8 Interactive",
+            "summary": "Worked with more than 30 blue-chip clients from U.K. to develop websites that are based on the company's custom built CMS (PresideCMS). Mainly worked with transforming PSD to HTML then did the integration and also written custom JS effects and codes.\\r\\nAlso involved in communicating with clients in terms of developing new features, fixing bugs and answering questions about their website.",
+            "start": {
+                "date": "2007-10-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2009-10-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "title": "Intern then Web Designer & Developer",
+            "organisation": "DiGi Telecommunications",
+            "summary": "Involved with producing many internal artworks and web applications for Human Resource Development department. Worked closely with the team to help them improve their workflow such as:\\r\\n- simplifying many forms and improving the look and feel\\r\\n- created Peer Recognition internal website to create awareness among staff of other people's outstanding achievement+effort\\r\\n- created D'Who for automatic creation of organisation chart by fetching data from the company's Oracle staff database.",
+            "start": {
+                "date": "2006-06-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2007-10-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "educationEntries": [
+        {
+            "level": "Masters in Knowledge Management",
+            "course_title": "Multimedia",
+            "institution": "Multimedia University",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2008-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2011-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        },
+        {
+            "level": "Degree in Information Technology",
+            "course_title": "Multimedia Systems",
+            "institution": "Multimedia University",
+            "grade": null,
+            "activities_and_societies": null,
+            "start": {
+                "date": "2003-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "end": {
+                "date": "2007-01-01 00:00:00.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            }
+        }
+    ],
+    "certifications": [],
+    "volunteerExperienceEntries": [],
+    "languages": [],
+    "honorsAndAwards": [],
+    "organizations": [],
+    "courses": [],
+    "projects": [],
+    "recommendations": [],
+    "testScores": [],
+    "url": "http:\/\/www.linkedin.com\/in\/aienzaini"
+}
